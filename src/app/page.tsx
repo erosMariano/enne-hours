@@ -5,6 +5,7 @@ import Header from "@/components/views/Hero/Header";
 
 import IconPlay from "@/images/icons/play.svg";
 import ImageApp from "@/images/image-app.png";
+import Button from "@/components/views/Hero/Button";
 
 function App() {
   return (
@@ -31,14 +32,12 @@ function App() {
           </p>
 
           <div className="mt-10 flex items-center gap-4">
-            <button className="text-neutral-950 bg-white font-semibold border border-white rounded py-3 px-5 text-xs cursor-pointer transition-all ease-linear hover:bg-transparent  hover:text-white">
-              Criar conta Grátis
-            </button>
-
-            <button className="flex gap-2 items-center justify-center text-white bg-transparent font-semibold border border-transparent rounded py-3 px-5 text-xs cursor-pointer transition-all ease-linear hover:border-white">
-              <Image src={IconPlay} alt="Ver funcionalidade" /> Ver
-              funcionalidades
-            </button>
+            <Button variant="primary" text="Criar conta Grátis" />
+            <Button
+              variant="secondary"
+              text="Ver funcionalidades"
+              icon={IconPlay}
+            />
           </div>
 
           <p className="mt-16 font-bold text-white/60 relative">
