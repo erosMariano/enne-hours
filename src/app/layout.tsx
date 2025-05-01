@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/views/Hero/Header";
 
 const interFont = Inter({
   weight: ["400", "500", "600", "700"],
   variable: "--font-inter",
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "Enne Hours",
-  description: "Enne Hours",
+  title: "Enne Hours | Dashboard",
+  description: "Enne Hours | Dashboard",
 };
 
 export default function RootLayout({
@@ -20,10 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-br">
-      <body className={`${interFont.variable}  antialiased`}>
-        <Header />
-        {children}
-      </body>
+      <body className={`${interFont.variable}  antialiased`}>{children}</body>
     </html>
   );
 }
