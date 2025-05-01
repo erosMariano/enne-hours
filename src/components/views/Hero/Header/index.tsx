@@ -1,44 +1,56 @@
 import React from "react";
 import Logo from "@/images/logo.svg";
 import Image from "next/image";
+import Link from "next/link";
+import Button from "../Button";
 
 function Header() {
   return (
-    <header className="flex items-center justify-between mx-auto mt-10">
-      <Image src={Logo} alt="Logo Enne Hours" quality={100} />
+    <header className="">
+      <div className="flex items-center justify-between mx-auto mt-10 container left-1/2 -translate-6/12 absolute z-10">
+        <Link href="/">
+          <Image src={Logo} alt="Enne hours" className="w-20" />
+        </Link>
 
-      <nav>
-        <ul className="flex items-center justify-center gap-10">
-          <li>
-            <a
-              href=""
-              className="text-white/60 text-xs hover:text-white transition-all ease-linear"
-            >
-              products
-            </a>
-          </li>
-          <li>
-            <a
-              href=""
-              className="text-white/60 text-xs hover:text-white transition-all ease-linear"
-            >
-              features
-            </a>
-          </li>
-          <li>
-            <a
-              href=""
-              className="text-white/60 text-xs hover:text-white transition-all ease-linear"
-            >
-              community
-            </a>
-          </li>
-        </ul>
-      </nav>
+        <nav>
+          <ul className="flex items-center justify-center gap-10">
+            <li>
+              <a
+                href=""
+                className="text-white/60 text-xs hover:text-white transition-all ease-linear"
+              >
+                products
+              </a>
+            </li>
+            <li>
+              <a
+                href=""
+                className="text-white/60 text-xs hover:text-white transition-all ease-linear"
+              >
+                features
+              </a>
+            </li>
+            <li>
+              <a
+                href=""
+                className="text-white/60 text-xs hover:text-white transition-all ease-linear"
+              >
+                community
+              </a>
+            </li>
+          </ul>
+        </nav>
 
-      <button className="text-white font-semibold border border-white rounded py-3 px-5 text-xs cursor-pointer transition-all ease-linear hover:bg-white hover:text-neutral-950">
-        Criar conta Grátis
-      </button>
+        <div className="flex items-center gap-4">
+          <Button text="Entrar" variant="primary" route="/login" />
+          <Button
+            text="Cadastrar"
+            variant="tertiary"
+            route="/register"
+            border
+          />
+        </div>
+      </div>
     </header>
   );
 }

@@ -5,16 +5,18 @@ import React from "react";
 import { useRouter } from "next/navigation"; // Import useRouter
 
 interface ButtonProps {
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "tertiary";
   text: string;
   icon?: StaticImageData;
+  route?: string; // Optional route prop
+  border?: boolean;
 }
 
-function Button({ text, icon, variant }: ButtonProps) {
+function Button({ text, icon, variant, route, border }: ButtonProps) {
   const router = useRouter(); // Initialize useRouter
 
   const handleCreateAccountClick = () => {
-    router.push("/login"); // Navigate to /login
+    if (route) router.push(route); // Navigate to /cadastro
   };
 
   if (variant === "primary") {
@@ -33,6 +35,18 @@ function Button({ text, icon, variant }: ButtonProps) {
         onClick={handleCreateAccountClick} // Add onClick handler
       >
         <Image src={icon} alt="Ver funcionalidade" /> {text}
+      </button>
+    );
+  } else if (variant === "tertiary") {
+    return (
+      <button
+        className={`${
+          border && "border border-white"
+        } text-white font-semibold rounded py-3 px-5 text-xs cursor-pointer transition-all ease-linear hover:bg-white hover:text-neutral-950`}
+        onClick={handleCreateAccountClick}
+      >
+        {icon && <Image src={icon} alt="Ver funcionalidade" />}
+        {text}
       </button>
     );
   } else {

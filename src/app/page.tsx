@@ -1,8 +1,6 @@
 import React from "react";
 import Image from "next/image";
 
-import Header from "@/components/views/Hero/Header";
-
 import IconPlay from "@/images/icons/play.svg";
 import ImageApp from "@/images/image-app.png";
 import Button from "@/components/views/Hero/Button";
@@ -10,9 +8,7 @@ import Button from "@/components/views/Hero/Button";
 function App() {
   return (
     <main className="container mx-auto">
-      <Header />
-
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex items-center justify-between gap-4 pb-36">
         <div className="max-w-[482px] mt-32">
           <h1 className="font-semibold text-4xl text-white/60">
             Domine seu tempo.
@@ -32,7 +28,11 @@ function App() {
           </p>
 
           <div className="mt-10 flex items-center gap-4">
-            <Button variant="primary" text="Criar conta Grátis" />
+            <Button
+              variant="primary"
+              text="Criar conta Grátis"
+              route="/register"
+            />
             <Button
               variant="secondary"
               text="Ver funcionalidades"
