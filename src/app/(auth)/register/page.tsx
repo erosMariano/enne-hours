@@ -4,6 +4,7 @@ import FormContainerAuth from "@/components/auth/FormContainer";
 function Cadastro() {
   return (
     <FormContainerAuth
+      type="register"
       subtitle={{
         text: "Já tem uma conta?",
         textRedirect: "Entre aqui",

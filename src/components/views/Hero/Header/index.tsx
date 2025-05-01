@@ -9,7 +9,7 @@ function Header() {
     <header className="">
       <div className="flex items-center justify-between mx-auto mt-10 container left-1/2 -translate-6/12 absolute z-10">
         <Link href="/">
-          <Image src={Logo} alt="Enne hours" className="w-20" />
+          <Image src={Logo} alt="Enne hours" height={38} width={81} />
         </Link>
 
         <nav>
