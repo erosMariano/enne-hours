@@ -1,5 +1,5 @@
 import React from "react";
-import FormContainerAuth from "@/components/auth/FormContainer";
+import FormContainerAuth from "@/components/views/auth/FormContainer";
 
 function Cadastro() {
   return (
