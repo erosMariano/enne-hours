@@ -61,7 +61,7 @@ function ActionBar({ onChangeStatus }: ActionBarProps) {
               <button
                 onClick={() => handleStatusChange(el.status)}
                 key={el.status}
-                className="cursor-pointer px-10 py-2.5 border border-transparent rounded transition-all hover:border-white w-full"
+                className="cursor-pointer px-10 py-2.5 border border-transparent rounded transition-all hover:border-white w-full text-sm"
               >
                 {el.label}
               </button>
