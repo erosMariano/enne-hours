@@ -8,3 +8,17 @@ export interface FormAuthProps {
   };
   labelSubmit: string;
 }
+
+// Dashboard
+export interface TimeEntry {
+  imgUrl: string;
+  id: number;
+  user: string;
+  project: string;
+  description: string;
+  time: string;
+  date: string;
+  status: StatusFilter;
+}
+
+export type StatusFilter = "approved" | "arresting" | "rejected" | "all";

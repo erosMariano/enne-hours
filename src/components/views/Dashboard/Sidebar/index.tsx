@@ -10,7 +10,7 @@ export default function Sidebar() {
 
   return (
     <div
-      className={`text-white max-w-72 bg-white/5 p-4 rounded h-full flex flex-col transition-all ${
+      className={`text-white max-w-72 bg-[#1b1b1b] p-4 rounded h-full flex flex-col transition-all ${
         isOpen ? "flex-1" : ""
       }`}
     >
