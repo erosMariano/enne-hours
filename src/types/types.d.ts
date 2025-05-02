@@ -21,4 +21,8 @@ export interface TimeEntry {
   status: StatusFilter;
 }
 
+export interface TaskListProps {
+  timeEntries: TimeEntry[];
+  statusActive: StatusFilter;
+}
 export type StatusFilter = "approved" | "arresting" | "rejected" | "all";

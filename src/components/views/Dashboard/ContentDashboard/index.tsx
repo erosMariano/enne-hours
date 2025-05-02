@@ -15,14 +15,6 @@ function ContentDashboard({ timeEntries }: ContentDashboardProps) {
     setSelectedStatus(status);
   }
 
-  // const filterdTimesEntries = timeEntries.filter((entry) => {
-  //   if (selectedStatus === "all") {
-  //     return entry;
-  //   } else if (entry.status == selectedStatus) {
-  //     return entry;
-  //   }
-  // });
-
   const filterdTimesEntries =
     selectedStatus == "all"
       ? timeEntries

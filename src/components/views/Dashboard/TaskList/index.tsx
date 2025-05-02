@@ -1,13 +1,8 @@
 "use client";
 
-import { StatusFilter, TimeEntry } from "@/types/types";
+import { TaskListProps } from "@/types/types";
 import { Pen } from "lucide-react";
 import React from "react";
-
-interface TaskListProps {
-  timeEntries: TimeEntry[];
-  statusActive: StatusFilter;
-}
 
 const statusDetails = {
   approved: {
