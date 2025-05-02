@@ -1,5 +1,7 @@
-import { Bell, MessageSquareMore } from "lucide-react";
 import React from "react";
+import { Bell } from "lucide-react";
+import Perfil from "@/images/perfil.webp";
+import Image from "next/image";
 
 function HeaderDashboard() {
   return (
@@ -13,12 +15,13 @@ function HeaderDashboard() {
         </div>
 
         <div className="flex items-center gap-2">
-          <img
-            className="w-8 h-8 rounded-full"
-            src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-            alt="Rounded avatar"
+          <Image
+            width={32}
+            height={32}
+            className="rounded-full"
+            src={Perfil}
+            alt="Eros Mariano"
           />
-
           <span>Eros Mariano</span>
         </div>
       </div>
