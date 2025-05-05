@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "../globals.css";
+import "../../styles/globals.css";
+
+import Header from "@/components/views/Hero/Header";
 
 const interFont = Inter({
   weight: ["400", "500", "600", "700"],
@@ -9,8 +11,8 @@ const interFont = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Enne Hours | Dashboard",
-  description: "Enne Hours | Dashboard",
+  title: "Enne Hours",
+  description: "Enne Hours",
 };
 
 export default function RootLayout({
@@ -20,7 +22,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-br">
-      <body className={`${interFont.variable}  antialiased`}>{children}</body>
+      <body className={`${interFont.variable}  antialiased`}>
+        <Header />
+        {children}
+      </body>
     </html>
   );
 }

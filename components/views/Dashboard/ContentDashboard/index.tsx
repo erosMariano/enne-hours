@@ -3,6 +3,7 @@ import React, { useMemo, useState } from "react";
 import ActionBar from "../ActionBar";
 import TaskList from "../TaskList";
 import { StatusFilter, TimeEntry } from "@/types/types";
+import { DatePicker } from "@heroui/date-picker";
 
 interface ContentDashboardProps {
   timeEntries: TimeEntry[];
@@ -51,6 +52,8 @@ function ContentDashboard({ timeEntries }: ContentDashboardProps) {
         statusActive={selectedStatus}
         timeEntries={filteredTimeEntris}
       />
+
+      <DatePicker />
     </>
   );
 }

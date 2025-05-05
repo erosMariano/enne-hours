@@ -6,8 +6,8 @@ import Button from "../Button";
 
 function Header() {
   return (
-    <header className="">
-      <div className="flex items-center justify-between mx-auto mt-10 container left-1/2 -translate-6/12 absolute z-10">
+    <header>
+      <div className="flex items-center justify-between mx-auto mt-10 container left-1/2 -translate-x-1/2 absolute z-10">
         <Link href="/">
           <Image src={Logo} alt="Enne hours" height={38} width={81} />
         </Link>
