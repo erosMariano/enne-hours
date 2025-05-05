@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import ActionBar from "../ActionBar";
 import TaskList from "../TaskList";
 import { StatusFilter, TimeEntry } from "@/types/types";
@@ -10,25 +10,46 @@ interface ContentDashboardProps {
 
 function ContentDashboard({ timeEntries }: ContentDashboardProps) {
   const [selectedStatus, setSelectedStatus] = useState<StatusFilter>("all");
+  const [allTimeEntries, setAllTimeEntries] =
+    useState<TimeEntry[]>(timeEntries);
+  const [searchText, setSearchText] = useState("");
 
   function handleChangeStatus(status: StatusFilter) {
     setSelectedStatus(status);
   }
 
-  const filterdTimesEntries =
-    selectedStatus == "all"
-      ? timeEntries
-      : timeEntries.filter((entry) => entry.status === selectedStatus);
+  function handleSearchTextChange(text: string) {
+    setSearchText(text.toLocaleLowerCase());
+  }
+  function handleNewTimeEntry(newTimeEntry: TimeEntry) {
+    setAllTimeEntries((prevState) => [...prevState, newTimeEntry]);
+  }
+
+  const filteredTimeEntris = useMemo(() => {
+    return allTimeEntries.filter((entry) => {
+      const matchesSearch = entry.project
+        .toLocaleLowerCase()
+        .includes(searchText);
+      const matchesStatus =
+        selectedStatus === "all" || entry.status === selectedStatus;
+
+      return matchesSearch && matchesStatus;
+    });
+  }, [allTimeEntries, searchText, selectedStatus]);
 
   return (
     <>
       <div className="flex-1 flex">
-        <ActionBar onChangeStatus={handleChangeStatus} />
+        <ActionBar
+          onSearchTimeEntry={handleSearchTextChange}
+          onAddNewTimeEntry={handleNewTimeEntry}
+          onChangeStatus={handleChangeStatus}
+        />
       </div>
 
       <TaskList
         statusActive={selectedStatus}
-        timeEntries={filterdTimesEntries}
+        timeEntries={filteredTimeEntris}
       />
     </>
   );

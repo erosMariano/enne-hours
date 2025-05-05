@@ -17,6 +17,10 @@ const statusDetails = {
     text: "Rejeitado",
     color: "bg-red-800",
   },
+  doing: {
+    text: "Andamento",
+    color: "bg-blue-800",
+  },
   all: {
     text: "Todos",
     color: "bg-red-800",

@@ -1,11 +1,13 @@
 "use client";
 
-import { StatusFilter } from "@/types/types";
+import { StatusFilter, TimeEntry } from "@/types/types";
 import { Play, Plus, Settings } from "lucide-react";
 import React, { useState } from "react";
 
 interface ActionBarProps {
   onChangeStatus: (status: StatusFilter) => void;
+  onAddNewTimeEntry: (newTimeEntry: TimeEntry) => void;
+  onSearchTimeEntry: (text: string) => void;
 }
 
 interface StatusOptionsProps {
@@ -17,9 +19,14 @@ const statusOptions: StatusOptionsProps[] = [
   { status: "approved", label: "Aprovado" },
   { status: "arresting", label: "Pendente" },
   { status: "rejected", label: "Rejeitado" },
+  { status: "doing", label: "Andamento" },
 ];
 
-function ActionBar({ onChangeStatus }: ActionBarProps) {
+function ActionBar({
+  onChangeStatus,
+  onAddNewTimeEntry,
+  onSearchTimeEntry,
+}: ActionBarProps) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState(statusOptions[0]);
 
@@ -33,12 +40,27 @@ function ActionBar({ onChangeStatus }: ActionBarProps) {
     onChangeStatus(status);
     setDropdownOpen(false);
   };
+
+  const handleAddTimeEntry = () => {
+    onAddNewTimeEntry({
+      imgUrl: "US",
+      id: 1212,
+      user: "Eros Mariano Silva",
+      project: "Site ACME",
+      description: "Ajustes finais no rodapé",
+      time: "0h 45min",
+      date: "2025-04-30",
+      status: "doing",
+    });
+  };
+
   return (
     <>
       <div className="flex-1 flex items-center gap-4">
         <input
+          onChange={(el) => onSearchTimeEntry(el.target.value)}
           type="text"
-          placeholder="Search"
+          placeholder="Procure por projeto"
           className="outline-none h-10 text-sm focus:border-white bg-[#1b1b1b] text-white placeholder:text-white/40 rounded-md border border-transparent transition-all p-2 w-full max-w-64 cursor-pointer hover:border-white"
         />
 
@@ -74,7 +96,10 @@ function ActionBar({ onChangeStatus }: ActionBarProps) {
         <button className="flex outline-none h-10 text-sm focus:border-white bg-[#1b1b1b] text-white  hover:border-white rounded-md border border-transparent transition-all px-2 gap-2 justify-between items-center cursor-pointer">
           <Settings /> Gerenciar Tarefas
         </button>
-        <button className="h-10 flex items-center justify-center gap-2 text-sm text-black bg-white rounded-md px-4 transition-all border border-transparent  hover:bg-[#1b1b1b] hover:text-white hover:border-white cursor-pointer">
+        <button
+          onClick={handleAddTimeEntry}
+          className="h-10 flex items-center justify-center gap-2 text-sm text-black bg-white rounded-md px-4 transition-all border border-transparent  hover:bg-[#1b1b1b] hover:text-white hover:border-white cursor-pointer"
+        >
           <Plus /> Nova Tarefa
         </button>
       </div>
