@@ -54,7 +54,7 @@ function TaskList({ timeEntries }: TaskListProps) {
                 Status
               </th>
               <th scope="col" className="px-6 py-3 font-normal">
-                Acões
+                Ações
               </th>
             </tr>
           </thead>

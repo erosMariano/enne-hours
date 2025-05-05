@@ -3,6 +3,7 @@
 import { StatusFilter, TimeEntry } from "@/types/types";
 import { Play, Plus, Settings } from "lucide-react";
 import React, { useState } from "react";
+import NewTaskForm from "../NewTaskForm";
 
 interface ActionBarProps {
   onChangeStatus: (status: StatusFilter) => void;
@@ -102,6 +103,8 @@ function ActionBar({
         >
           <Plus /> Nova Tarefa
         </button>
+
+        <NewTaskForm />
       </div>
     </>
   );
