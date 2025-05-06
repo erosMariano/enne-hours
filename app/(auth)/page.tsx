@@ -29,26 +29,26 @@ function App() {
 
           <div className="mt-10 flex items-center gap-4">
             <Button
-              variant="primary"
-              text="Criar conta Grátis"
               route="/register"
+              text="Criar conta Grátis"
+              variant="primary"
             />
             <Button
-              variant="secondary"
-              text="Ver funcionalidades"
               icon={IconPlay}
+              text="Ver funcionalidades"
+              variant="secondary"
             />
           </div>
 
           <p className="mt-16 font-bold text-white/60 relative">
             Confiado por profissionais autônomos, equipes de tecnologia e
             consultorias que valorizam o controle do tempo.
-            <span className="w-1/2 bg-white/60 h-[1px] block absolute"></span>
+            <span className="w-1/2 bg-white/60 h-[1px] block absolute" />
           </p>
         </div>
 
         <div className="relative top-[125px]">
-          <Image src={ImageApp} alt="Enne hours" />
+          <Image alt="Enne hours" src={ImageApp} />
         </div>
       </div>
     </main>

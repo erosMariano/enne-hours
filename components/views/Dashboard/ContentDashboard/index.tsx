@@ -1,9 +1,10 @@
 "use client";
 import React, { useMemo, useState } from "react";
+
 import ActionBar from "../ActionBar";
 import TaskList from "../TaskList";
+
 import { StatusFilter, TimeEntry } from "@/types/types";
-import { DatePicker } from "@heroui/date-picker";
 
 interface ContentDashboardProps {
   timeEntries: TimeEntry[];
@@ -42,9 +43,9 @@ function ContentDashboard({ timeEntries }: ContentDashboardProps) {
     <>
       <div className="flex-1 flex">
         <ActionBar
-          onSearchTimeEntry={handleSearchTextChange}
           onAddNewTimeEntry={handleNewTimeEntry}
           onChangeStatus={handleChangeStatus}
+          onSearchTimeEntry={handleSearchTextChange}
         />
       </div>
 

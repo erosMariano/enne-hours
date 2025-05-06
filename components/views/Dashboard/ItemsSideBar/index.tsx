@@ -29,10 +29,10 @@ function ItemsSideBar({ sidebarActive }: ItemsSideBarProps) {
           className="flex items-center gap-2  hover:bg-white/10 rounded transition-all"
         >
           <Link
-            href={item.link}
             className={`flex items-center gap-2 w-full text-sm  p-2 ${
               sidebarActive && "justify-center"
             }`}
+            href={item.link}
           >
             {item.icon}
 

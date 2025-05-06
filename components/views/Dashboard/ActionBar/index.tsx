@@ -1,9 +1,11 @@
 "use client";
 
-import { StatusFilter, TimeEntry } from "@/types/types";
 import { Play, Plus, Settings } from "lucide-react";
 import React, { useState } from "react";
+
 import NewTaskForm from "../NewTaskForm";
+
+import { StatusFilter, TimeEntry } from "@/types/types";
 
 interface ActionBarProps {
   onChangeStatus: (status: StatusFilter) => void;
@@ -35,6 +37,7 @@ function ActionBar({
 
   const handleStatusChange = (status: StatusFilter) => {
     const found = statusOptions.find((item) => item.status == status);
+
     if (!found) return;
 
     setSelectedStatus(found);
@@ -57,18 +60,18 @@ function ActionBar({
 
   return (
     <>
-      <div className="flex-1 flex items-center gap-4">
+      <div className="flex-1 flex items-center gap-4 ">
         <input
-          onChange={(el) => onSearchTimeEntry(el.target.value)}
-          type="text"
-          placeholder="Procure por projeto"
           className="outline-none h-10 text-sm focus:border-white bg-[#1b1b1b] text-white placeholder:text-white/40 rounded-md border border-transparent transition-all p-2 w-full max-w-64 cursor-pointer hover:border-white"
+          placeholder="Procure por projeto"
+          type="text"
+          onChange={(el) => onSearchTimeEntry(el.target.value)}
         />
 
         <div className="relative z-10">
           <button
-            onClick={toggleDropdown}
             className="gap-2 flex outline-none h-10 text-sm focus:border-white bg-[#1b1b1b] text-white placeholder:text-white/40 rounded-md border border-transparent transition-all p-2 w-full max-w-32 justify-between items-center cursor-pointer hover:border-white"
+            onClick={toggleDropdown}
           >
             {selectedStatus.label} <Play className="rotate-90" size={14} />
           </button>
@@ -82,9 +85,9 @@ function ActionBar({
           >
             {statusOptions.map((el) => (
               <button
-                onClick={() => handleStatusChange(el.status)}
                 key={el.status}
                 className="cursor-pointer px-10 py-2.5 border border-transparent rounded transition-all hover:border-white w-full text-sm"
+                onClick={() => handleStatusChange(el.status)}
               >
                 {el.label}
               </button>
@@ -98,8 +101,8 @@ function ActionBar({
           <Settings /> Gerenciar Tarefas
         </button>
         <button
-          onClick={handleAddTimeEntry}
           className="h-10 flex items-center justify-center gap-2 text-sm text-black bg-white rounded-md px-4 transition-all border border-transparent  hover:bg-[#1b1b1b] hover:text-white hover:border-white cursor-pointer"
+          onClick={handleAddTimeEntry}
         >
           <Plus /> Nova Tarefa
         </button>

@@ -1,17 +1,18 @@
 import React from "react";
+
 import FormContainerAuth from "@/components/views/auth/FormContainer";
 
 function Login() {
   return (
     <FormContainerAuth
-      type="login"
+      labelSubmit="Entrar"
       subtitle={{
         text: "Não tem uma conta ainda?",
         textRedirect: "Cadastre-se aqui",
         urlRedirect: "/register",
       }}
-      labelSubmit="Entrar"
       title="Bem vindo de volta"
+      type="login"
     />
   );
 }

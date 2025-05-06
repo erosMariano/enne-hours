@@ -1,8 +1,9 @@
+import React from "react";
+
 import ContentDashboard from "@/components/views/Dashboard/ContentDashboard";
 import HeaderDashboard from "@/components/views/Dashboard/Header";
 import Sidebar from "@/components/views/Dashboard/Sidebar";
 import { TimeEntry } from "@/types/types";
-import React from "react";
 
 function Dashboard() {
   const timeEntries: TimeEntry[] = [

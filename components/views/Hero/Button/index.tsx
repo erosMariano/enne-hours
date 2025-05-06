@@ -34,7 +34,7 @@ function Button({ text, icon, variant, route, border }: ButtonProps) {
         className="flex gap-2 items-center justify-center text-white bg-transparent font-semibold border border-transparent rounded py-3 px-5 text-xs cursor-pointer transition-all ease-linear hover:border-white"
         onClick={handleCreateAccountClick} // Add onClick handler
       >
-        <Image src={icon} alt="Ver funcionalidade" /> {text}
+        <Image alt="Ver funcionalidade" src={icon} /> {text}
       </button>
     );
   } else if (variant === "tertiary") {
@@ -45,7 +45,7 @@ function Button({ text, icon, variant, route, border }: ButtonProps) {
         } text-white font-semibold rounded py-3 px-5 text-xs cursor-pointer transition-all ease-linear hover:bg-white hover:text-neutral-950`}
         onClick={handleCreateAccountClick}
       >
-        {icon && <Image src={icon} alt="Ver funcionalidade" />}
+        {icon && <Image alt="Ver funcionalidade" src={icon} />}
         {text}
       </button>
     );

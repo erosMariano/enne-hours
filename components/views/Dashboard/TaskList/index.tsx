@@ -1,8 +1,9 @@
 "use client";
 
-import { TaskListProps } from "@/types/types";
 import { Pen } from "lucide-react";
 import React from "react";
+
+import { TaskListProps } from "@/types/types";
 
 const statusDetails = {
   approved: {
@@ -35,25 +36,25 @@ function TaskList({ timeEntries }: TaskListProps) {
         <table className="w-full text-sm text-left rtl:text-right">
           <thead className="text-xs text-white">
             <tr>
-              <th scope="col" className="px-6 py-3 font-normal">
+              <th className="px-6 py-3 font-normal" scope="col">
                 Usuário
               </th>
-              <th scope="col" className="px-6 py-3 font-normal">
+              <th className="px-6 py-3 font-normal" scope="col">
                 Projeto
               </th>
-              <th scope="col" className="px-6 py-3 font-normal">
+              <th className="px-6 py-3 font-normal" scope="col">
                 Descrição
               </th>
-              <th scope="col" className="px-6 py-3 font-normal">
+              <th className="px-6 py-3 font-normal" scope="col">
                 Tempo Registrado
               </th>
-              <th scope="col" className="px-6 py-3 font-normal">
+              <th className="px-6 py-3 font-normal" scope="col">
                 Data
               </th>
-              <th scope="col" className="px-6 py-3 font-normal">
+              <th className="px-6 py-3 font-normal" scope="col">
                 Status
               </th>
-              <th scope="col" className="px-6 py-3 font-normal">
+              <th className="px-6 py-3 font-normal" scope="col">
                 Ações
               </th>
             </tr>
@@ -62,12 +63,12 @@ function TaskList({ timeEntries }: TaskListProps) {
             {timeEntries.map(
               ({ date, description, id, project, status, time, user }) => (
                 <tr
-                  className="odd:bg-[#1b1b1b]  even:bg-transparent border-b border-white/15"
                   key={id}
+                  className="odd:bg-[#1b1b1b]  even:bg-transparent border-b border-white/15"
                 >
                   <th
-                    scope="row"
                     className="px-6 py-4 font-medium whitespace-nowrap text-white"
+                    scope="row"
                   >
                     {user}
                   </th>
@@ -88,7 +89,7 @@ function TaskList({ timeEntries }: TaskListProps) {
                     <Pen size={14} />
                   </td>
                 </tr>
-              )
+              ),
             )}
           </tbody>
         </table>
