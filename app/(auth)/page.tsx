@@ -9,7 +9,7 @@ function App() {
   return (
     <main className="container mx-auto">
       <div className="flex items-center justify-between gap-4 pb-36">
-        <div className="max-w-[482px] mt-32">
+        <div className="max-w-[482px] mt-44">
           <h1 className="font-semibold text-4xl text-white/60">
             Domine seu tempo.
           </h1>
