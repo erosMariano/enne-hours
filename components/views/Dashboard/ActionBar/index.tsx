@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import NewTaskForm from "../NewTaskForm";
 
 import { StatusFilter, TimeEntry } from "@/types/types";
+import { statusOptionsWithAll } from "@/utils/constants";
 
 interface ActionBarProps {
   onChangeStatus: (status: StatusFilter) => void;
@@ -13,49 +14,26 @@ interface ActionBarProps {
   onSearchTimeEntry: (text: string) => void;
 }
 
-interface StatusOptionsProps {
-  status: StatusFilter;
-  label: string;
-}
-const statusOptions: StatusOptionsProps[] = [
-  { status: "all", label: "Todos" },
-  { status: "approved", label: "Aprovado" },
-  { status: "arresting", label: "Pendente" },
-  { status: "rejected", label: "Rejeitado" },
-  { status: "doing", label: "Andamento" },
-];
-
 function ActionBar({
   onChangeStatus,
   onAddNewTimeEntry,
   onSearchTimeEntry,
 }: ActionBarProps) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState(statusOptions[0]);
+  const [selectedStatus, setSelectedStatus] = useState(statusOptionsWithAll[0]);
+  const [openModal, setOpenModal] = useState<boolean>(false);
 
   const toggleDropdown = () => setDropdownOpen((prev) => !prev);
+  const handleOpenModal = () => setOpenModal((prev) => !prev);
 
   const handleStatusChange = (status: StatusFilter) => {
-    const found = statusOptions.find((item) => item.status == status);
+    const found = statusOptionsWithAll.find((item) => item.status == status);
 
     if (!found) return;
 
     setSelectedStatus(found);
     onChangeStatus(status);
     setDropdownOpen(false);
-  };
-
-  const handleAddTimeEntry = () => {
-    onAddNewTimeEntry({
-      imgUrl: "US",
-      id: 1212,
-      user: "Eros Mariano Silva",
-      project: "Site ACME",
-      description: "Ajustes finais no rodapé",
-      time: "0h 45min",
-      date: "2025-04-30",
-      status: "doing",
-    });
   };
 
   return (
@@ -77,13 +55,13 @@ function ActionBar({
           </button>
 
           <div
-            className={`absolute bg-[#1b1b1b] z-100 rounded p-2 text-white top-14  transition-all ${
+            className={`absolute bg-[#1b1b1b] z-20 rounded p-2 text-white top-14  transition-all ${
               dropdownOpen
                 ? "opacity-100 pointer-events-auto"
                 : "opacity-0 pointer-events-none"
             }`}
           >
-            {statusOptions.map((el) => (
+            {statusOptionsWithAll.map((el) => (
               <button
                 key={el.status}
                 className="cursor-pointer px-10 py-2.5 border border-transparent rounded transition-all hover:border-white w-full text-sm"
@@ -102,12 +80,16 @@ function ActionBar({
         </button>
         <button
           className="h-10 flex items-center justify-center gap-2 text-sm text-black bg-white rounded-md px-4 transition-all border border-transparent  hover:bg-[#1b1b1b] hover:text-white hover:border-white cursor-pointer"
-          onClick={handleAddTimeEntry}
+          onClick={handleOpenModal}
         >
           <Plus /> Nova Tarefa
         </button>
 
-        <NewTaskForm />
+        <NewTaskForm
+          onAddTimeEntry={onAddNewTimeEntry}
+          onChangeOpenModal={handleOpenModal}
+          onOpenModal={openModal}
+        />
       </div>
     </>
   );

@@ -31,3 +31,8 @@ export type StatusFilter =
   | "rejected"
   | "doing"
   | "all";
+
+interface StatusOptionsProps {
+  status: StatusFilter;
+  label: string;
+}
