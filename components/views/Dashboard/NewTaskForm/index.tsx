@@ -1,5 +1,8 @@
 import { StatusFilter } from "@/types/types";
+import { DatePicker } from "@heroui/date-picker";
 import React from "react";
+import { I18nProvider } from "@react-aria/i18n";
+import { Select, SelectSection, SelectItem } from "@heroui/select";
 
 interface StatusOptionsProps {
   status: StatusFilter;
@@ -19,7 +22,7 @@ function NewTaskForm() {
       <h2 className="text-2xl font-bold text-white">Adicionar Nova Tarefa</h2>
       <div>
         <label htmlFor="">
-          <h3 className="text-sm text-white">Título da tarefa</h3>
+          <h3 className="text-sm text-white mb-2 mt-4">Título da tarefa</h3>
           <input
             type="text"
             placeholder="Digite seu título..."
@@ -27,27 +30,32 @@ function NewTaskForm() {
           />
         </label>
 
-        <div className="flex my-4">
-          <label htmlFor="">
-            <h3 className="text-sm text-white">Data de início:</h3>
-            <input type="date" name="" id="" />
+        <div className="flex my-4 justify-between gap-4">
+          <label className="w-full">
+            <h3 className="text-sm text-white mb-2">Data de início:</h3>
+            <I18nProvider locale="pt-BR">
+              <DatePicker showMonthAndYearPickers className="date-picker" />
+            </I18nProvider>
           </label>
 
-          <label htmlFor="">
-            <h3 className="text-sm text-white">Data de Fim</h3>
-            <input type="date" name="" id="" />
+          <label className="w-full">
+            <h3 className="text-sm text-white mb-2">Data de Fim</h3>
+            <I18nProvider locale="pt-BR">
+              <DatePicker showMonthAndYearPickers className="date-picker" />
+            </I18nProvider>
           </label>
         </div>
 
         <label htmlFor="">
-          <h3 className="text-sm text-white">Status</h3>
-          <select name="" id="">
-            {statusOptions.map((el) => (
-              <option key={el.status} value={el.status}>
-                {el.label}
-              </option>
+          <h3 className="text-sm text-white mb-2">Status</h3>
+          <Select
+            className="w-full select-heroui"
+            placeholder="Selecione o status"
+          >
+            {statusOptions.map((status) => (
+              <SelectItem key={status.status}>{status.label}</SelectItem>
             ))}
-          </select>
+          </Select>
         </label>
       </div>
       <button className="mt-6 w-full h-10 flex items-center justify-center gap-2 text-sm text-black bg-white rounded-md px-4 transition-all border border-transparent  hover:bg-[#1b1b1b] hover:text-white hover:border-white cursor-pointer">

@@ -52,8 +52,6 @@ function ContentDashboard({ timeEntries }: ContentDashboardProps) {
         statusActive={selectedStatus}
         timeEntries={filteredTimeEntris}
       />
-
-      <DatePicker />
     </>
   );
 }

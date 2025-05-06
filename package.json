@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@heroui/date-picker": "^2.3.19",
+    "@heroui/select": "^2.4.19",
     "@heroui/system": "2.4.15",
     "@heroui/theme": "2.4.15",
     "@hookform/resolvers": "^5.0.1",
