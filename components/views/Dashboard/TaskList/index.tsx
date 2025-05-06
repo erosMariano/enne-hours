@@ -31,7 +31,7 @@ const dateFormatter = new Intl.DateTimeFormat("pt-BR", { timeZone: "UTC" });
 function TaskList({ timeEntries }: TaskListProps) {
   return (
     <section>
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-8">
+      <div className="relative overflow-x-auto shadow-md mt-8">
         <table className="w-full text-sm text-left rtl:text-right">
           <thead className="text-xs text-white">
             <tr>
@@ -62,7 +62,7 @@ function TaskList({ timeEntries }: TaskListProps) {
             {timeEntries.map(
               ({ date, description, id, project, status, time, user }) => (
                 <tr
-                  className="odd:bg-[#1b1b1b]  even:bg-transparent  border-b "
+                  className="odd:bg-[#1b1b1b]  even:bg-transparent border-b border-white/15"
                   key={id}
                 >
                   <th
