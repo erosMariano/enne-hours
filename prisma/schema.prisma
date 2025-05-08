@@ -15,8 +15,36 @@ datasource db {
 }
 
 model User {
-  id    String @id @default(uuid()) @map("_id")
-  email String @unique
-  name  String
+  id       String    @id @default(uuid()) @map("_id")
+  email    String    @unique
+  name     String
   password String
+  projects Project[] // Relação 1:N com Project
+}
+
+model Project {
+  id        String   @id @default(uuid()) @map("_id")
+  name      String
+  userId    String?  // é opcional
+  user      User?    @relation(fields: [userId], references: [id])
+  tasks     Task[]   // Relação 1:N com Task
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Task {
+  id             String   @id @default(uuid()) @map("_id")
+  projectId      String
+  project        Project  @relation(fields: [projectId], references: [id])
+  
+  userName       String  
+  projectName    String  
+  
+  description    String
+  startTime      DateTime
+  endTime        DateTime
+  totalTime      Int      
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  status         String   
 }
