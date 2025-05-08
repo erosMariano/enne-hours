@@ -32,7 +32,7 @@ function NewTaskForm({
 
   return (
     <div
-      className={`absolute w-96 bg-[#242424] shadow rounded top-14 z-10 p-6 transition-all ${onOpenModal ? "right-0" : "-right-[120%]"}`}
+      className={`absolute w-96 bg-[#242424] shadow rounded top-14 z-10 p-6 transition-all ${onOpenModal ? "right-0" : "-right-[calc(100%+100px)]"}`}
     >
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold text-white">Adicionar Nova Tarefa</h2>

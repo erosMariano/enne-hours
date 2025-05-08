@@ -75,7 +75,7 @@ function ActionBar({
       </div>
 
       <div className="flex items-center gap-4 relative">
-        <button className="flex outline-none h -10 text-sm focus:border-white bg-[#1b1b1b] text-white  hover:border-white rounded-md border border-transparent transition-all px-2 gap-2 justify-between items-center cursor-pointer">
+        <button className="flex outline-none h-10 text-sm focus:border-white bg-[#1b1b1b] text-white  hover:border-white rounded-md border border-transparent transition-all px-2 gap-2 justify-between items-center cursor-pointer">
           <Settings /> Gerenciar Tarefas
         </button>
         <button
