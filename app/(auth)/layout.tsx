@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-
-import { Inter } from "next/font/google";
 import "../../styles/globals.css";
 
 import Header from "@/components/views/Hero/Header";
+import AuthSessionProvider from "@/components/providers/SessionProvider";
+
+import { Inter } from "next/font/google";
 
 const interFont = Inter({
   weight: ["400", "500", "600", "700"],
@@ -18,14 +19,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="pt-br">
-      <body className={`${interFont.variable}  antialiased`}>
-        <Header />
-        {children}
+      <body className={`${interFont.variable} antialiased`}>
+        <AuthSessionProvider>
+          <Header />
+          {children}
+        </AuthSessionProvider>
       </body>
     </html>
   );

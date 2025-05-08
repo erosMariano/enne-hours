@@ -1,11 +1,18 @@
 import React from "react";
 
+import { getServerSession } from "next-auth";
+
 import ContentDashboard from "@/components/views/Dashboard/ContentDashboard";
 import HeaderDashboard from "@/components/views/Dashboard/Header";
 import Sidebar from "@/components/views/Dashboard/Sidebar";
 import { TimeEntry } from "@/types/types";
 
-function Dashboard() {
+import { authOptions } from "@/auth/authOptions";
+
+async function Dashboard() {
+  const session = await getServerSession(authOptions);
+  console.log(session);
+
   const timeEntries: TimeEntry[] = [
     {
       imgUrl: "US",

@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 
 import "../../styles/globals.css";
 import { Providers } from "../providers";
+import AuthSessionProvider from "@/components/providers/SessionProvider";
 
 const interFont = Inter({
   weight: ["400", "500", "600", "700"],
@@ -24,7 +25,9 @@ export default function RootLayout({
   return (
     <html lang="pt-br">
       <body className={`${interFont.variable}  antialiased`}>
-        <Providers>{children}</Providers>
+        <AuthSessionProvider>
+          <Providers>{children}</Providers>
+        </AuthSessionProvider>
       </body>
     </html>
   );

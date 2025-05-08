@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import Image from "next/image";
 
@@ -7,16 +6,6 @@ import ImageApp from "@/images/image-app.png";
 import Button from "@/components/views/Hero/Button";
 
 function App() {
-  const handleCreateUser = async () => {
-    const res = await fetch("/server/cadaster-user", {
-      method: "POST",
-    });
-
-    const json = await res.json();
-
-    console.log(json);
-  };
-
   return (
     <main className="container mx-auto">
       <div className="flex items-center justify-between gap-4 pb-36">
@@ -61,10 +50,6 @@ function App() {
         <div className="relative top-[125px]">
           <Image alt="Enne hours" src={ImageApp} />
         </div>
-
-        <button onClick={handleCreateUser} className="text-white">
-          Eros
-        </button>
       </div>
     </main>
   );
