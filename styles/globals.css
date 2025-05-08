@@ -69,7 +69,8 @@ input:-webkit-autofill:active {
   background-color: #0f0f0f;
 }
 
-.focus-within\:hover\:bg-default-100:hover:focus-within {
+.focus-within\:hover\:bg-default-100:hover:focus-within,
+.data-\[hover\=true\]\:bg-default-200[data-hover="true"] {
   background-color: #0f0f0f !important;
 }
 .data-\[editable\=true\]\:data-\[placeholder\=true\]\:text-foreground-500[data-placeholder="true"][data-editable="true"],
