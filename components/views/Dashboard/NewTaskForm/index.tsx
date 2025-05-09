@@ -103,8 +103,8 @@ function NewTaskForm({
         </div>
       </div>
       <button
-        onClick={handleAddTimeEntry}
         className="mt-6 w-full h-10 flex items-center justify-center gap-2 text-sm text-black bg-white rounded-md px-4 transition-all border border-transparent  hover:bg-[#1b1b1b] hover:text-white hover:border-white cursor-pointer"
+        onClick={handleAddTimeEntry}
       >
         Cadastrar
       </button>

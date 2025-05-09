@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import "../../styles/globals.css";
 
+import { Inter } from "next/font/google";
+
 import Header from "@/components/views/Hero/Header";
 import AuthSessionProvider from "@/components/providers/SessionProvider";
-
-import { Inter } from "next/font/google";
 
 const interFont = Inter({
   weight: ["400", "500", "600", "700"],

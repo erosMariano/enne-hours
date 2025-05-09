@@ -53,8 +53,7 @@ export async function POST(req: Request) {
       { status: 201 }
     );
   } catch (error) {
-    console.error("Erro ao criar usuário:", error);
-
+    console.log(error);
     return NextResponse.json(
       { error: "Erro interno. Tente novamente mais tarde." },
       { status: 500 }

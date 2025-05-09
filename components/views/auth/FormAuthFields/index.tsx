@@ -8,14 +8,13 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ToastContainer } from "react-toastify";
+import { signIn } from "next-auth/react";
 
 import { FormAuthProps } from "@/types/types";
 import Logo from "@/images/logo-mini.svg";
 import Spin from "@/images/icons/spin.svg";
 import CirclesLogin from "@/images/icons/circle-login.svg";
 import { toastError, toastSuccess } from "@/utils/toast";
-
-import { signIn } from "next-auth/react";
 
 const baseSchema = {
   email: z.string().email("Email inválido"),
@@ -82,6 +81,8 @@ function FormAuthFields({ type, labelSubmit, subtitle, title }: FormAuthProps) {
     if (loginRes?.ok) {
       if (type === "login") {
         toastSuccess("Login Realizado com Sucesso!");
+      } else if (type === "register") {
+        toastSuccess("Registrado com sucesso!");
       }
       route.push("/dashboard");
     } else {
@@ -147,7 +148,7 @@ function FormAuthFields({ type, labelSubmit, subtitle, title }: FormAuthProps) {
                 autoComplete="off"
                 className="outline-none transition-all border bg-[#0F0F0F] text-sm border-[#424242] rounded pl-10 w-full h-8 placeholder:text-[#a7a7a7] text-white focus:outline-none focus:border-[#a7a7a7] focus:ring-1 focus:ring-[#a7a7a7]"
                 placeholder="digite seu email"
-                type="text"
+                type="email"
               />
             </label>
             {errors.email && (

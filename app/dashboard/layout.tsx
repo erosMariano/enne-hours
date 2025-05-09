@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 
 import "../../styles/globals.css";
 import { Providers } from "../providers";
+
 import AuthSessionProvider from "@/components/providers/SessionProvider";
 
 const interFont = Inter({
