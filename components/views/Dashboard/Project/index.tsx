@@ -3,6 +3,7 @@
 import React, { useCallback, useState } from "react";
 import { PackageCheck } from "lucide-react";
 import CreateProjectForm from "./CreateProjectForm";
+import { ToastContainer } from "react-toastify";
 
 interface Project {
   id: string;
@@ -75,6 +76,7 @@ function ProjectInterface({ project, user }: ProjectInterfaceProps) {
         toggleModal={toggleModal}
         user={user}
       />
+      <ToastContainer />
     </section>
   );
 }
