@@ -4,33 +4,10 @@ import React, { useMemo, useState } from "react";
 import ActionBar from "../ActionBar";
 import TaskList from "../TaskList";
 
-import { StatusFilter } from "@/types/types";
-
-export interface Task {
-  id: string;
-  createdAt: Date;
-  updatedAt: Date;
-  projectId: string;
-  userName: string;
-  projectName: string;
-  description: string;
-  startTime: Date;
-  endTime: Date;
-  totalTime: number;
-  status: "approved" | "arresting" | "rejected" | "doing";
-}
-
-interface Project {
-  id: string;
-  name: string;
-  createdAt: Date;
-  userId: string | null;
-  updatedAt: Date;
-  tasks: Task[];
-}
+import { ProjectUnique, StatusFilter } from "@/types/types";
 
 interface ContentDashboardProps {
-  project: Project;
+  project: ProjectUnique;
 }
 
 function ContentDashboard({ project }: ContentDashboardProps) {
@@ -58,6 +35,7 @@ function ContentDashboard({ project }: ContentDashboardProps) {
   return (
     <div className="flex-1 flex flex-col gap-4">
       <ActionBar
+        project={project}
         onAddNewTimeEntry={() => {}}
         onChangeStatus={handleChangeStatus}
         onSearchTimeEntry={handleSearchTextChange}

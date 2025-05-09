@@ -25,6 +25,7 @@ const statusDetails = {
 const dateFormatter = new Intl.DateTimeFormat("pt-BR", { timeZone: "UTC" });
 
 interface Task {
+  title: string;
   id: string;
   createdAt: Date;
   updatedAt: Date;
@@ -35,7 +36,7 @@ interface Task {
   startTime: Date;
   endTime: Date;
   totalTime: number;
-  status: keyof typeof statusDetails;
+  status: keyof typeof statusDetails | string;
 }
 
 interface TaskListProps {
@@ -51,7 +52,7 @@ function TaskList({ taskEntries }: TaskListProps) {
           <thead className="text-xs text-white">
             <tr>
               <th className="px-6 py-3 font-normal" scope="col">
-                Usuário
+                Título
               </th>
               <th className="px-6 py-3 font-normal" scope="col">
                 Projeto
@@ -75,7 +76,9 @@ function TaskList({ taskEntries }: TaskListProps) {
           </thead>
           <tbody>
             {taskEntries.map((task) => {
-              const statusInfo = statusDetails[task.status] || {
+              const statusInfo = statusDetails[
+                task.status as keyof typeof statusDetails
+              ] || {
                 text: task.status,
                 color: "bg-gray-700",
               };
@@ -86,7 +89,7 @@ function TaskList({ taskEntries }: TaskListProps) {
                   className="odd:bg-[#1b1b1b] even:bg-transparent border-b border-white/15"
                 >
                   <td className="px-6 py-4 font-medium text-white whitespace-nowrap">
-                    {task.userName}
+                    {task.title}
                   </td>
                   <td className="px-6 py-4 text-white">{task.projectName}</td>
                   <td className="px-6 py-4 text-white">{task.description}</td>

@@ -25,7 +25,11 @@ export default async function Projeto({
 
         <div className="flex-1 flex flex-col gap-4">
           <HeaderDashboard />
-          {project && <ContentDashboard project={project} />}
+          {project ? (
+            <ContentDashboard project={project} />
+          ) : (
+            <p>Projeto não encontrato</p>
+          )}
         </div>
       </div>
     </main>

@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toastError, toastSuccess } from "@/utils/toast";
 import { useRouter } from "next/navigation";
+import { useDashboardStore } from "@/store/dashboardStore";
 
 const projectSchema = z.object({
   project: z.string().min(3, "Mínimo 3 caracteres"),
@@ -20,21 +21,15 @@ interface CreateProjectFormProps {
   openModal: boolean;
   setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
   toggleModal: () => void;
-  user?: {
-    id: string;
-    project: [];
-    name?: string | null;
-    email?: string | null;
-    image?: string | null;
-  };
 }
 
 function CreateProjectForm({
-  user,
   openModal,
   setOpenModal,
   toggleModal,
 }: CreateProjectFormProps) {
+  const { user } = useDashboardStore();
+
   const router = useRouter();
 
   const {

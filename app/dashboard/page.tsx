@@ -1,35 +1,31 @@
 import React from "react";
 import { getServerSession } from "next-auth";
-
-import HeaderDashboard from "@/components/views/Dashboard/Header";
-import Sidebar from "@/components/views/Dashboard/Sidebar";
-import { authOptions } from "@/auth/authOptions";
-import ProjectInterface from "@/components/views/Dashboard/Project";
 import { prisma } from "@/prisma/prisma";
+import { authOptions } from "@/auth/authOptions";
+import DashboardClient from "@/components/views/Dashboard/DashboardClient";
 
-async function Dashboard() {
+export default async function Dashboard() {
   const session = await getServerSession(authOptions);
-  const user = session?.user;
 
-  const projects = user?.id
-    ? await prisma.project.findMany({
-        where: { userId: user.id },
-      })
-    : [];
+  const userSession = session?.user;
 
-  return (
-    <main className="min-h-screen flex">
-      <div className="h-auto p-4 min-h-screen flex items-start justify-between gap-4 flex-1">
-        <Sidebar />
+  // Verifica se todos os campos necessários existem
+  const isUserValid =
+    userSession?.id && userSession?.name && userSession?.email;
 
-        <div className="flex-1 flex flex-col gap-4">
-          <HeaderDashboard />
-          <ProjectInterface project={projects} user={user} />
-          {/* <ContentDashboard timeEntries={timeEntries} /> */}
-        </div>
-      </div>
-    </main>
-  );
+  if (!isUserValid) {
+    return <div className="text-white p-8">Você precisa estar logado.</div>;
+  }
+
+  const user = {
+    id: userSession.id,
+    name: userSession.name ?? "Unknown Name",
+    email: userSession.email ?? "Unknown Email",
+  };
+
+  const projects = await prisma.project.findMany({
+    where: { userId: user.id },
+  });
+
+  return <DashboardClient projects={projects} user={user} />;
 }
-
-export default Dashboard;

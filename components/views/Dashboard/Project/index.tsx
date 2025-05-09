@@ -5,27 +5,11 @@ import { PackageCheck } from "lucide-react";
 import CreateProjectForm from "./CreateProjectForm";
 import { ToastContainer } from "react-toastify";
 import Link from "next/link";
+import { useDashboardStore } from "@/store/dashboardStore";
 
-interface Project {
-  id: string;
-  name: string;
-  createdAt: Date;
-  userId: string | null;
-  updatedAt: Date;
-}
+function ProjectInterface() {
+  const { projects } = useDashboardStore();
 
-interface ProjectInterfaceProps {
-  project: Project[];
-  user?: {
-    id: string;
-    project: [];
-    name?: string | null;
-    email?: string | null;
-    image?: string | null;
-  };
-}
-
-function ProjectInterface({ project, user }: ProjectInterfaceProps) {
   const [openModal, setOpenModal] = useState(false);
   const toggleModal = useCallback(() => setOpenModal((prev) => !prev), []);
 
@@ -53,7 +37,7 @@ function ProjectInterface({ project, user }: ProjectInterfaceProps) {
     <div>
       <div className="flex justify-end">{createButton}</div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-        {project.map(({ id, name, createdAt }) => (
+        {projects.map(({ id, name, createdAt }) => (
           <Link
             href={`/dashboard/projeto/${id}`}
             key={id}
@@ -71,12 +55,11 @@ function ProjectInterface({ project, user }: ProjectInterfaceProps) {
 
   return (
     <section className="text-white">
-      {project.length === 0 ? emptyState : projectGrid}
+      {projects.length === 0 ? emptyState : projectGrid}
       <CreateProjectForm
         openModal={openModal}
         setOpenModal={setOpenModal}
         toggleModal={toggleModal}
-        user={user}
       />
       <ToastContainer />
     </section>

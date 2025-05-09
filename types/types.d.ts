@@ -42,6 +42,7 @@ export interface User {
   email: string;
   name: string;
   password: string;
+  image?: string | null; // Add the image property
   projects: Project[];
 }
 
@@ -55,10 +56,12 @@ export interface Project {
   updatedAt: Date;
 }
 
+// types/types.ts
+
 export interface Task {
+  title: string;
   id: string;
   projectId: string;
-  project: Project;
   userName: string;
   projectName: string;
   description: string;
@@ -68,4 +71,35 @@ export interface Task {
   createdAt: Date;
   updatedAt: Date;
   status: string;
+}
+export interface TaskCreate {
+  title: string;
+  projectId: string;
+  userName: string;
+  projectName: string;
+  description: string;
+  startTime: string;
+  endTime: string;
+  totalTime: number;
+  createdAt: string;
+  updatedAt: string;
+  status: string;
+}
+
+export interface ProjectWithTasks {
+  id: string;
+  name: string;
+  userId: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  tasks: Task[];
+}
+
+export interface ProjectUnique {
+  id: string;
+  name: string;
+  createdAt: Date;
+  userId: string | null;
+  updatedAt: Date;
+  tasks: Task[];
 }

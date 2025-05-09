@@ -5,19 +5,21 @@ import React, { useState } from "react";
 
 import NewTaskForm from "../NewTaskForm";
 
-import { StatusFilter, TimeEntry } from "@/types/types";
+import { ProjectUnique, StatusFilter, TimeEntry } from "@/types/types";
 import { statusOptionsWithAll } from "@/utils/constants";
 
 interface ActionBarProps {
   onChangeStatus: (status: StatusFilter) => void;
   onAddNewTimeEntry: (newTimeEntry: TimeEntry) => void;
   onSearchTimeEntry: (text: string) => void;
+  project: ProjectUnique;
 }
 
 function ActionBar({
   onChangeStatus,
   onAddNewTimeEntry,
   onSearchTimeEntry,
+  project,
 }: ActionBarProps) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState(statusOptionsWithAll[0]);
@@ -86,6 +88,7 @@ function ActionBar({
         </button>
 
         <NewTaskForm
+          project={project}
           onAddTimeEntry={onAddNewTimeEntry}
           onChangeOpenModal={handleOpenModal}
           onOpenModal={openModal}
