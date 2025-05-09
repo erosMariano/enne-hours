@@ -37,7 +37,7 @@ function ActionBar({
   };
 
   return (
-    <>
+    <div className="flex">
       <div className="flex-1 flex items-center gap-4 ">
         <input
           className="outline-none h-10 text-sm focus:border-white bg-[#1b1b1b] text-white placeholder:text-white/40 rounded-md border border-transparent transition-all p-2 w-full max-w-64 cursor-pointer hover:border-white"
@@ -91,7 +91,7 @@ function ActionBar({
           onOpenModal={openModal}
         />
       </div>
-    </>
+    </div>
   );
 }
 

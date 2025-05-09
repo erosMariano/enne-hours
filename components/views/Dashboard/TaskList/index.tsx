@@ -3,8 +3,6 @@
 import { Pen } from "lucide-react";
 import React from "react";
 
-import { TaskListProps } from "@/types/types";
-
 const statusDetails = {
   approved: {
     text: "Aprovado",
@@ -22,14 +20,30 @@ const statusDetails = {
     text: "Andamento",
     color: "bg-blue-800",
   },
-  all: {
-    text: "Todos",
-    color: "bg-red-800",
-  },
 };
+
 const dateFormatter = new Intl.DateTimeFormat("pt-BR", { timeZone: "UTC" });
 
-function TaskList({ timeEntries }: TaskListProps) {
+interface Task {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  projectId: string;
+  userName: string;
+  projectName: string;
+  description: string;
+  startTime: Date;
+  endTime: Date;
+  totalTime: number;
+  status: keyof typeof statusDetails;
+}
+
+interface TaskListProps {
+  taskEntries: Task[];
+  statusActive: string;
+}
+
+function TaskList({ taskEntries }: TaskListProps) {
   return (
     <section>
       <div className="relative overflow-x-auto shadow-md mt-8">
@@ -60,37 +74,41 @@ function TaskList({ timeEntries }: TaskListProps) {
             </tr>
           </thead>
           <tbody>
-            {timeEntries.map(
-              ({ date, description, id, project, status, time, user }) => (
+            {taskEntries.map((task) => {
+              const statusInfo = statusDetails[task.status] || {
+                text: task.status,
+                color: "bg-gray-700",
+              };
+
+              return (
                 <tr
-                  key={id}
-                  className="odd:bg-[#1b1b1b]  even:bg-transparent border-b border-white/15"
+                  key={task.id}
+                  className="odd:bg-[#1b1b1b] even:bg-transparent border-b border-white/15"
                 >
-                  <th
-                    className="px-6 py-4 font-medium whitespace-nowrap text-white"
-                    scope="row"
-                  >
-                    {user}
-                  </th>
-                  <td className="px-6 py-4 text-white">{project}</td>
-                  <td className="px-6 py-4 text-white">{description}</td>
-                  <td className="px-6 py-4 text-white">{time}</td>
-                  <td className="px-6 py-4 text-white">
-                    {dateFormatter.format(new Date(date))}
+                  <td className="px-6 py-4 font-medium text-white whitespace-nowrap">
+                    {task.userName}
                   </td>
-                  <td className={`px-6 py-4 text-white `}>
+                  <td className="px-6 py-4 text-white">{task.projectName}</td>
+                  <td className="px-6 py-4 text-white">{task.description}</td>
+                  <td className="px-6 py-4 text-white">
+                    {(task.totalTime / 60).toFixed(2)}h
+                  </td>
+                  <td className="px-6 py-4 text-white">
+                    {dateFormatter.format(new Date(task.createdAt))}
+                  </td>
+                  <td className="px-6 py-4 text-white">
                     <span
-                      className={`text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded-full text-white ${statusDetails[status].color}`}
+                      className={`text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded-full ${statusInfo.color}`}
                     >
-                      {statusDetails[status].text}
+                      {statusInfo.text}
                     </span>
                   </td>
                   <td className="px-6 py-4 text-white">
                     <Pen size={14} />
                   </td>
                 </tr>
-              ),
-            )}
+              );
+            })}
           </tbody>
         </table>
       </div>

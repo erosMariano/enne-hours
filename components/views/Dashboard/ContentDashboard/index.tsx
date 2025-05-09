@@ -4,16 +4,37 @@ import React, { useMemo, useState } from "react";
 import ActionBar from "../ActionBar";
 import TaskList from "../TaskList";
 
-import { StatusFilter, TimeEntry } from "@/types/types";
+import { StatusFilter } from "@/types/types";
 
-interface ContentDashboardProps {
-  timeEntries: TimeEntry[];
+export interface Task {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  projectId: string;
+  userName: string;
+  projectName: string;
+  description: string;
+  startTime: Date;
+  endTime: Date;
+  totalTime: number;
+  status: "approved" | "arresting" | "rejected" | "doing";
 }
 
-function ContentDashboard({ timeEntries }: ContentDashboardProps) {
+interface Project {
+  id: string;
+  name: string;
+  createdAt: Date;
+  userId: string | null;
+  updatedAt: Date;
+  tasks: Task[];
+}
+
+interface ContentDashboardProps {
+  project: Project;
+}
+
+function ContentDashboard({ project }: ContentDashboardProps) {
   const [selectedStatus, setSelectedStatus] = useState<StatusFilter>("all");
-  const [allTimeEntries, setAllTimeEntries] =
-    useState<TimeEntry[]>(timeEntries);
   const [searchText, setSearchText] = useState("");
 
   function handleChangeStatus(status: StatusFilter) {
@@ -21,39 +42,35 @@ function ContentDashboard({ timeEntries }: ContentDashboardProps) {
   }
 
   function handleSearchTextChange(text: string) {
-    setSearchText(text.toLocaleLowerCase());
-  }
-  function handleNewTimeEntry(newTimeEntry: TimeEntry) {
-    setAllTimeEntries((prevState) => [...prevState, newTimeEntry]);
+    setSearchText(text.toLowerCase());
   }
 
-  const filteredTimeEntris = useMemo(() => {
-    return allTimeEntries.filter((entry) => {
-      const matchesSearch = entry.project
-        .toLocaleLowerCase()
-        .includes(searchText);
+  const filteredTasks = useMemo(() => {
+    return project.tasks.filter((task) => {
+      const matchesSearch = task.description.toLowerCase().includes(searchText);
       const matchesStatus =
-        selectedStatus === "all" || entry.status === selectedStatus;
+        selectedStatus === "all" || task.status === selectedStatus;
 
       return matchesSearch && matchesStatus;
     });
-  }, [allTimeEntries, searchText, selectedStatus]);
+  }, [project.tasks, searchText, selectedStatus]);
 
   return (
-    <>
-      <div className="flex-1 flex">
-        <ActionBar
-          onAddNewTimeEntry={handleNewTimeEntry}
-          onChangeStatus={handleChangeStatus}
-          onSearchTimeEntry={handleSearchTextChange}
-        />
-      </div>
-
-      <TaskList
-        statusActive={selectedStatus}
-        timeEntries={filteredTimeEntris}
+    <div className="flex-1 flex flex-col gap-4">
+      <ActionBar
+        onAddNewTimeEntry={() => {}}
+        onChangeStatus={handleChangeStatus}
+        onSearchTimeEntry={handleSearchTextChange}
       />
-    </>
+
+      {project.tasks.length === 0 ? (
+        <p className="text-white text-center mt-10">
+          Nenhuma tarefa encontrada neste projeto.
+        </p>
+      ) : (
+        <TaskList statusActive={selectedStatus} taskEntries={filteredTasks} />
+      )}
+    </div>
   );
 }
 

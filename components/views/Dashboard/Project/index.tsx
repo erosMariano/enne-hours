@@ -4,6 +4,7 @@ import React, { useCallback, useState } from "react";
 import { PackageCheck } from "lucide-react";
 import CreateProjectForm from "./CreateProjectForm";
 import { ToastContainer } from "react-toastify";
+import Link from "next/link";
 
 interface Project {
   id: string;
@@ -53,7 +54,8 @@ function ProjectInterface({ project, user }: ProjectInterfaceProps) {
       <div className="flex justify-end">{createButton}</div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
         {project.map(({ id, name, createdAt }) => (
-          <div
+          <Link
+            href={`/dashboard/projeto/${id}`}
             key={id}
             className="bg-[#1b1b1b] rounded p-4 flex flex-col items-center justify-center cursor-pointer"
           >
@@ -61,7 +63,7 @@ function ProjectInterface({ project, user }: ProjectInterfaceProps) {
             <p className="text-sm text-white/40 max-w-80 text-center">
               Criado em {new Date(createdAt).toLocaleDateString()}
             </p>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
