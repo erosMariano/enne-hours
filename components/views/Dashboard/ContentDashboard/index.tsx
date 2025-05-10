@@ -5,6 +5,7 @@ import ActionBar from "../ActionBar";
 import TaskList from "../TaskList";
 
 import { ProjectUnique, StatusFilter } from "@/types/types";
+import { ToastContainer } from "react-toastify";
 
 interface ContentDashboardProps {
   project: ProjectUnique;
@@ -46,7 +47,10 @@ function ContentDashboard({ project }: ContentDashboardProps) {
           Nenhuma tarefa encontrada neste projeto.
         </p>
       ) : (
-        <TaskList statusActive={selectedStatus} taskEntries={filteredTasks} />
+        <>
+          <TaskList statusActive={selectedStatus} taskEntries={filteredTasks} />
+          <ToastContainer />
+        </>
       )}
     </div>
   );

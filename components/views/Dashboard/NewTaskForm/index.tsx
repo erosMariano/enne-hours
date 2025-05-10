@@ -5,10 +5,12 @@ import { Select, SelectItem } from "@heroui/select";
 import { CircleX } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 
-import { ProjectUnique, Task, TaskCreate, TimeEntry } from "@/types/types";
+import { ProjectUnique, TaskCreate, TimeEntry } from "@/types/types";
 import { baseStatusOptions } from "@/utils/constants";
 import { useDashboardStore } from "@/store/dashboardStore";
 import { useRouter } from "next/navigation";
+import { getMinutesDifference } from "@/utils/getTime";
+import { toastError, toastSuccess } from "@/utils/toast";
 
 interface NewTaskFormProps {
   onChangeOpenModal: () => void;
@@ -80,22 +82,29 @@ function NewTaskForm({
 
   const onSubmit = async (data: FormData) => {
     if (project) {
+      const initialDateIso = formatCalendarDateToIso(data.initialDate);
+      const endDateIso = formatCalendarDateToIso(data.endDate);
+
+      const startTime = new Date(initialDateIso);
+      const endTime = new Date(endDateIso);
+
+      const diffTime = getMinutesDifference(startTime, endTime);
       const status = Array.from(data.status)[0];
+
       const dataSendBackend: TaskCreate = {
         title: data.title,
         createdAt: new Date().toISOString(),
-        description: data.description,
-        projectId: project?.id,
-        projectName: project.name,
-        status: status,
-        startTime: new Date(
-          formatCalendarDateToIso(data.initialDate)
-        ).toISOString(),
-        endTime: new Date(formatCalendarDateToIso(data.endDate)).toISOString(),
-        totalTime: 10,
         updatedAt: new Date().toISOString(),
-        userName: user?.name || "",
+        description: data.description,
+        projectId: project.id,
+        projectName: project.name,
+        status,
+        startTime: startTime.toISOString(),
+        endTime: endTime.toISOString(),
+        totalTime: diffTime,
       };
+
+      console.log(dataSendBackend);
 
       // Fazendo o fetch com async/await
       try {
@@ -106,20 +115,18 @@ function NewTaskForm({
           },
           body: JSON.stringify(dataSendBackend),
         });
-
         if (!response.ok) {
           throw new Error("Erro ao enviar os dados");
         }
-
         const result = await response.json();
         console.log("Resposta do servidor:", result);
-
         reset(); // Reset form
         onChangeOpenModal(); // Close modal
         route.refresh();
+        toastSuccess("Tarefa registrada com sucesso");
       } catch (error) {
         console.error("Erro ao enviar os dados:", error);
-        // Aqui você pode lidar com o erro, como mostrar uma mensagem para o usuário
+        toastError("Erro ao enviar os dados");
       }
     }
   };

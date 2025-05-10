@@ -62,7 +62,6 @@ export interface Task {
   title: string;
   id: string;
   projectId: string;
-  userName: string;
   projectName: string;
   description: string;
   startTime: Date;
@@ -75,7 +74,6 @@ export interface Task {
 export interface TaskCreate {
   title: string;
   projectId: string;
-  userName: string;
   projectName: string;
   description: string;
   startTime: string;

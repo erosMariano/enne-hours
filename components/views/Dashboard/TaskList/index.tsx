@@ -30,7 +30,6 @@ interface Task {
   createdAt: Date;
   updatedAt: Date;
   projectId: string;
-  userName: string;
   projectName: string;
   description: string;
   startTime: Date;
@@ -94,7 +93,8 @@ function TaskList({ taskEntries }: TaskListProps) {
                   <td className="px-6 py-4 text-white">{task.projectName}</td>
                   <td className="px-6 py-4 text-white">{task.description}</td>
                   <td className="px-6 py-4 text-white">
-                    {(task.totalTime / 60).toFixed(2)}h
+                    {Math.floor(task.totalTime / 60)}h
+                    {Math.floor(task.totalTime % 60)}min
                   </td>
                   <td className="px-6 py-4 text-white">
                     {dateFormatter.format(new Date(task.createdAt))}
