@@ -36,7 +36,6 @@ function ContentDashboard({ project }: ContentDashboardProps) {
     <div className="flex-1 flex flex-col gap-4">
       <ActionBar
         project={project}
-        onAddNewTimeEntry={() => {}}
         onChangeStatus={handleChangeStatus}
         onSearchTimeEntry={handleSearchTextChange}
       />

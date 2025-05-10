@@ -7,7 +7,7 @@ import { useForm, Controller } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
-import { ProjectUnique, TaskCreate, TimeEntry } from "@/types/types";
+import { ProjectUnique, TaskCreate } from "@/types/types";
 import { baseStatusOptions } from "@/utils/constants";
 import { getMinutesDifference } from "@/utils/getTime";
 import { toastError, toastSuccess } from "@/utils/toast";
@@ -16,7 +16,6 @@ import Spin from "@/images/icons/spin.svg";
 interface NewTaskFormProps {
   onChangeOpenModal: () => void;
   onOpenModal: boolean;
-  onAddTimeEntry: (data: TimeEntry) => void;
   project: ProjectUnique;
 }
 
