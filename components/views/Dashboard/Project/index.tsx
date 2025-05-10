@@ -67,7 +67,7 @@ function ProjectInterface() {
         {projects.map(({ id, name, createdAt }) => (
           <Link
             key={id}
-            className="bg-[#1b1b1b] rounded p-4 flex flex-col items-center justify-center cursor-pointer"
+            className="bg-[#1b1b1b] rounded p-4 flex flex-col items-center justify-center hover:bg-white/10 transition-all h-36"
             href={`/dashboard/projeto/${id}`}
           >
             <h2 className="font-bold text-2xl text-white">{name}</h2>

@@ -1,6 +1,12 @@
 "use client";
 
-import { Pen } from "lucide-react";
+import {
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  DropdownTrigger,
+} from "@heroui/dropdown";
+import { EllipsisVertical } from "lucide-react";
 import React from "react";
 
 const statusDetails = {
@@ -107,7 +113,24 @@ function TaskList({ taskEntries }: TaskListProps) {
                     </span>
                   </td>
                   <td className="px-6 py-4 text-white">
-                    <Pen size={14} />
+                    <Dropdown>
+                      <DropdownTrigger>
+                        <EllipsisVertical
+                          className="hover:bg-white/10 p-1 rounded cursor-pointer transition-all"
+                          size={28}
+                        />
+                      </DropdownTrigger>
+                      <DropdownMenu aria-label="Static Actions">
+                        <DropdownItem key="edit">Editar Tarefa</DropdownItem>
+                        <DropdownItem
+                          key="delete"
+                          className="text-danger"
+                          color="danger"
+                        >
+                          Deletar
+                        </DropdownItem>
+                      </DropdownMenu>
+                    </Dropdown>
                   </td>
                 </tr>
               );

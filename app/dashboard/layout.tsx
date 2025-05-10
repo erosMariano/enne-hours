@@ -24,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-br">
+    <html className="dark" lang="pt-br">
       <body className={`${interFont.variable}  antialiased`}>
         <AuthSessionProvider>
           <Providers>{children}</Providers>

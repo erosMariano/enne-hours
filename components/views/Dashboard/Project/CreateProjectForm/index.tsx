@@ -46,7 +46,7 @@ function CreateProjectForm({
       if (!user) return;
 
       try {
-        const response = await fetch("/api/create-project", {
+        const response = await fetch("/api/project", {
           method: "POST",
           body: JSON.stringify({
             name: data.project,

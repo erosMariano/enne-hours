@@ -9,7 +9,9 @@
     "lint": "eslint --fix"
   },
   "dependencies": {
+    "@heroui/button": "^2.2.19",
     "@heroui/date-picker": "^2.3.19",
+    "@heroui/dropdown": "^2.3.19",
     "@heroui/select": "^2.4.19",
     "@heroui/system": "2.4.15",
     "@heroui/theme": "2.4.15",

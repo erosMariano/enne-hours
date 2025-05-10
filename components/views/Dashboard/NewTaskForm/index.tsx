@@ -1,15 +1,17 @@
 import { DatePicker } from "@heroui/date-picker";
-import React from "react";
+import React, { useState } from "react";
 import { I18nProvider } from "@react-aria/i18n";
 import { Select, SelectItem } from "@heroui/select";
 import { CircleX } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 import { ProjectUnique, TaskCreate, TimeEntry } from "@/types/types";
 import { baseStatusOptions } from "@/utils/constants";
 import { getMinutesDifference } from "@/utils/getTime";
 import { toastError, toastSuccess } from "@/utils/toast";
+import Spin from "@/images/icons/spin.svg";
 
 interface NewTaskFormProps {
   onChangeOpenModal: () => void;
@@ -43,6 +45,7 @@ function NewTaskForm({
   onChangeOpenModal,
   onOpenModal,
 }: NewTaskFormProps) {
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const { control, handleSubmit, reset } = useForm<FormData>({
     defaultValues: {
       title: "",
@@ -79,6 +82,7 @@ function NewTaskForm({
 
   const onSubmit = async (data: FormData) => {
     if (project) {
+      setIsSubmitting(true);
       const initialDateIso = formatCalendarDateToIso(data.initialDate);
       const endDateIso = formatCalendarDateToIso(data.endDate);
 
@@ -124,6 +128,8 @@ function NewTaskForm({
         }
       } catch {
         toastError("Erro ao enviar os dados");
+      } finally {
+        setIsSubmitting(false);
       }
     }
   };
@@ -246,7 +252,13 @@ function NewTaskForm({
           className="mt-6 w-full h-10 flex items-center justify-center gap-2 text-sm text-black bg-white rounded-md px-4 transition-all border border-transparent hover:bg-[#1b1b1b] hover:text-white hover:border-white cursor-pointer"
           type="submit"
         >
-          Cadastrar
+          {isSubmitting ? (
+            <span className="flex items-center justify-center">
+              <Image alt="spin" className="animate-spin" src={Spin} />
+            </span>
+          ) : (
+            <span>Cadastrar</span>
+          )}
         </button>
       </form>
     </div>
