@@ -1,40 +1,35 @@
 import { DatePicker } from "@heroui/date-picker";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { I18nProvider } from "@react-aria/i18n";
 import { Select, SelectItem } from "@heroui/select";
 import { CircleX } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import {
+  parseAbsoluteToLocal,
+  parseZonedDateTime,
+  ZonedDateTime,
+} from "@internationalized/date";
 
 import { ProjectUnique, TaskCreate } from "@/types/types";
 import { baseStatusOptions } from "@/utils/constants";
-import { getMinutesDifference } from "@/utils/getTime";
+import { getMinutesDifference, zonedDateTimeToJSDate } from "@/utils/getTime";
 import { toastError, toastSuccess } from "@/utils/toast";
 import Spin from "@/images/icons/spin.svg";
+import { useTaskStore } from "@/store/taskItemStore";
 
 interface NewTaskFormProps {
   onChangeOpenModal: () => void;
   onOpenModal: boolean;
   project: ProjectUnique;
-}
-
-interface CalendarDate {
-  calendar: { identifier: string };
-  era: string;
-  year: number;
-  month: number;
-  day: number;
-  hour: number;
-  minute: number;
-  second: number;
-  millisecond: number;
+  onEditMode: boolean;
 }
 
 interface FormData {
   title: string;
-  initialDate: CalendarDate | null;
-  endDate: CalendarDate | null;
+  initialDate: ZonedDateTime | null;
+  endDate: ZonedDateTime | null;
   status: string;
   description: string;
 }
@@ -43,6 +38,7 @@ function NewTaskForm({
   project,
   onChangeOpenModal,
   onOpenModal,
+  onEditMode,
 }: NewTaskFormProps) {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const { control, handleSubmit, reset } = useForm<FormData>({
@@ -54,12 +50,12 @@ function NewTaskForm({
       description: "",
     },
   });
-
+  const { task } = useTaskStore();
   const route = useRouter();
 
   // Convert CalendarDate to ISO 8601 string
   const formatCalendarDateToIso = (
-    calendarDate: CalendarDate | null,
+    calendarDate: ZonedDateTime | null,
   ): string => {
     if (!calendarDate) return "";
     const { year, month, day, hour, minute, second, millisecond } =
@@ -79,17 +75,72 @@ function NewTaskForm({
     return date.toISOString(); // e.g., 2001-03-18T18:03:01.000Z
   };
 
+  async function handleCreateTask(dataSendBackend: TaskCreate) {
+    const response = await fetch("/api/task", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(dataSendBackend),
+    });
+
+    if (!response.ok) {
+      toastError("Erro ao enviar os dados");
+
+      return;
+    }
+    const result = await response.json();
+
+    if (result) {
+      reset(); // Reset form
+      onChangeOpenModal(); // Close modal
+      route.refresh();
+      toastSuccess("Tarefa registrada com sucesso");
+    }
+  }
+
+  async function handleEditTask(dataSendBackend: TaskCreate) {
+    const data = {
+      ...dataSendBackend,
+      id: task[0].id,
+    };
+    const response = await fetch("/api/task", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      toastError("Erro ao enviar os dados");
+
+      return;
+    }
+    const result = await response.json();
+
+    if (result) {
+      reset(); // Reset form
+      onChangeOpenModal(); // Close modal
+      route.refresh();
+      toastSuccess("Atualizada com sucesso");
+    }
+  }
+
   const onSubmit = async (data: FormData) => {
     if (project) {
       setIsSubmitting(true);
-      const initialDateIso = formatCalendarDateToIso(data.initialDate);
-      const endDateIso = formatCalendarDateToIso(data.endDate);
 
-      const startTime = new Date(initialDateIso);
-      const endTime = new Date(endDateIso);
+      const startTime = zonedDateTimeToJSDate(
+        parseAbsoluteToLocal(formatCalendarDateToIso(data.initialDate!)),
+      );
+
+      const endTime = zonedDateTimeToJSDate(
+        parseAbsoluteToLocal(formatCalendarDateToIso(data.endDate!)),
+      );
 
       const diffTime = getMinutesDifference(startTime, endTime);
-      const status = Array.from(data.status)[0];
+      const status = data.status;
 
       const dataSendBackend: TaskCreate = {
         title: data.title,
@@ -104,28 +155,11 @@ function NewTaskForm({
         totalTime: diffTime,
       };
 
-      // Fazendo o fetch com async/await
       try {
-        const response = await fetch("/api/task", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(dataSendBackend),
-        });
-
-        if (!response.ok) {
-          toastError("Erro ao enviar os dados");
-
-          return;
-        }
-        const result = await response.json();
-
-        if (result) {
-          reset(); // Reset form
-          onChangeOpenModal(); // Close modal
-          route.refresh();
-          toastSuccess("Tarefa registrada com sucesso");
+        if (onEditMode) {
+          await handleEditTask(dataSendBackend);
+        } else {
+          await handleCreateTask(dataSendBackend);
         }
       } catch {
         toastError("Erro ao enviar os dados");
@@ -134,6 +168,32 @@ function NewTaskForm({
       }
     }
   };
+
+  function toZonedDateTimeString(date: Date): string {
+    return date.toISOString().replace("Z", "[UTC]");
+  }
+
+  useEffect(() => {
+    if (onEditMode && task.length > 0) {
+      const taskItem = task[0];
+
+      const zonedStartTime = parseZonedDateTime(
+        toZonedDateTimeString(taskItem.startTime),
+      );
+
+      const zonedEndTime = parseZonedDateTime(
+        toZonedDateTimeString(taskItem.endTime),
+      );
+
+      reset({
+        title: taskItem.title,
+        description: taskItem.description,
+        status: String(taskItem.status),
+        initialDate: zonedStartTime,
+        endDate: zonedEndTime,
+      });
+    }
+  }, [onEditMode, task, reset]);
 
   return (
     <div
@@ -182,6 +242,7 @@ function NewTaskForm({
                       className="date-picker"
                       granularity="second"
                       id="initial-date"
+                      value={field.value}
                       onChange={(date) => field.onChange(date)}
                     />
                   )}
@@ -200,6 +261,7 @@ function NewTaskForm({
                       className="date-picker"
                       granularity="second"
                       id="end-date"
+                      value={field.value}
                       onChange={(date) => field.onChange(date)}
                     />
                   )}
@@ -224,7 +286,12 @@ function NewTaskForm({
                   className="w-full select-heroui"
                   id="select-task"
                   placeholder="Selecione o status"
-                  onSelectionChange={(key) => field.onChange(key)}
+                  selectedKeys={field.value ? [field.value] : []}
+                  onSelectionChange={(key) => {
+                    const value = Array.from(key)[0];
+
+                    field.onChange(value);
+                  }}
                 >
                   {baseStatusOptions.map((status) => (
                     <SelectItem key={status.status}>{status.label}</SelectItem>
@@ -258,7 +325,7 @@ function NewTaskForm({
               <Image alt="spin" className="animate-spin" src={Spin} />
             </span>
           ) : (
-            <span>Cadastrar</span>
+            <span>{onEditMode ? "Editar" : "Cadastrar"}</span>
           )}
         </button>
       </form>

@@ -11,6 +11,8 @@ import { useRouter } from "next/navigation";
 import React from "react";
 
 import { toastError, toastSuccess } from "@/utils/toast";
+import { ItemTaskList } from "@/types/types";
+import { useTaskStore } from "@/store/taskItemStore";
 
 const statusDetails = {
   approved: {
@@ -33,27 +35,16 @@ const statusDetails = {
 
 const dateFormatter = new Intl.DateTimeFormat("pt-BR", { timeZone: "UTC" });
 
-interface Task {
-  title: string;
-  id: string;
-  createdAt: Date;
-  updatedAt: Date;
-  projectId: string;
-  projectName: string;
-  description: string;
-  startTime: Date;
-  endTime: Date;
-  totalTime: number;
-  status: keyof typeof statusDetails | string;
-}
-
 interface TaskListProps {
-  taskEntries: Task[];
+  taskEntries: ItemTaskList[];
   statusActive: string;
+  onOpenModal: () => void;
+  handleEditMode: (value: boolean) => void;
 }
 
-function TaskList({ taskEntries }: TaskListProps) {
+function TaskList({ taskEntries, onOpenModal, handleEditMode }: TaskListProps) {
   const router = useRouter();
+  const { setTask } = useTaskStore();
 
   async function handleDeleteTask(id: string) {
     const response = await fetch("/api/project", {
@@ -75,6 +66,12 @@ function TaskList({ taskEntries }: TaskListProps) {
     } catch (error) {
       toastError(String(error));
     }
+  }
+
+  function handleEditModal(task: ItemTaskList) {
+    handleEditMode(true);
+    onOpenModal();
+    setTask([task]);
   }
 
   return (
@@ -148,7 +145,12 @@ function TaskList({ taskEntries }: TaskListProps) {
                         />
                       </DropdownTrigger>
                       <DropdownMenu aria-label="Static Actions">
-                        <DropdownItem key="edit">Editar Tarefa</DropdownItem>
+                        <DropdownItem
+                          key="edit"
+                          onClick={() => handleEditModal(task)}
+                        >
+                          Editar Tarefa
+                        </DropdownItem>
                         <DropdownItem
                           key="delete"
                           className="text-danger"

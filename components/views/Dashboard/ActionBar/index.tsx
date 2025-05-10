@@ -12,19 +12,25 @@ interface ActionBarProps {
   onChangeStatus: (status: StatusFilter) => void;
   onSearchTimeEntry: (text: string) => void;
   project: ProjectUnique;
+  onOpenModal: () => void;
+  activeModal: boolean;
+  onEditMode: boolean;
+  handleEditMode: (value: boolean) => void;
 }
 
 function ActionBar({
   onChangeStatus,
   onSearchTimeEntry,
   project,
+  onOpenModal,
+  activeModal,
+  onEditMode,
+  handleEditMode,
 }: ActionBarProps) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState(statusOptionsWithAll[0]);
-  const [openModal, setOpenModal] = useState<boolean>(false);
 
   const toggleDropdown = () => setDropdownOpen((prev) => !prev);
-  const handleOpenModal = () => setOpenModal((prev) => !prev);
 
   const handleStatusChange = (status: StatusFilter) => {
     const found = statusOptionsWithAll.find((item) => item.status == status);
@@ -35,6 +41,11 @@ function ActionBar({
     onChangeStatus(status);
     setDropdownOpen(false);
   };
+
+  function handleNewTask() {
+    handleEditMode(false);
+    onOpenModal();
+  }
 
   return (
     <div className="flex">
@@ -80,15 +91,16 @@ function ActionBar({
         </button>
         <button
           className="h-10 flex items-center justify-center gap-2 text-sm text-black bg-white rounded-md px-4 transition-all border border-transparent  hover:bg-[#1b1b1b] hover:text-white hover:border-white cursor-pointer"
-          onClick={handleOpenModal}
+          onClick={handleNewTask}
         >
           <Plus /> Nova Tarefa
         </button>
 
         <NewTaskForm
           project={project}
-          onChangeOpenModal={handleOpenModal}
-          onOpenModal={openModal}
+          onChangeOpenModal={onOpenModal}
+          onEditMode={onEditMode}
+          onOpenModal={activeModal}
         />
       </div>
     </div>

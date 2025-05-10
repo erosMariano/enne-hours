@@ -101,3 +101,17 @@ export interface ProjectUnique {
   updatedAt: Date;
   tasks: Task[];
 }
+
+export interface ItemTaskList {
+  title: string;
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  projectId: string;
+  projectName: string;
+  description: string;
+  startTime: Date;
+  endTime: Date;
+  totalTime: number;
+  status: keyof typeof statusDetails | string;
+}

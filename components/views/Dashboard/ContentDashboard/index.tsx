@@ -13,6 +13,11 @@ interface ContentDashboardProps {
 function ContentDashboard({ project }: ContentDashboardProps) {
   const [selectedStatus, setSelectedStatus] = useState<StatusFilter>("all");
   const [searchText, setSearchText] = useState("");
+  const [openModal, setOpenModal] = useState<boolean>(false);
+  const handleOpenModal = () => setOpenModal((prev) => !prev);
+  const handleEditMode = (value: boolean) => setEditMode(value);
+
+  const [editMode, setEditMode] = useState<boolean>(false);
 
   function handleChangeStatus(status: StatusFilter) {
     setSelectedStatus(status);
@@ -35,8 +40,12 @@ function ContentDashboard({ project }: ContentDashboardProps) {
   return (
     <div className="flex-1 flex flex-col gap-4">
       <ActionBar
+        activeModal={openModal}
+        handleEditMode={handleEditMode}
         project={project}
         onChangeStatus={handleChangeStatus}
+        onEditMode={editMode}
+        onOpenModal={handleOpenModal}
         onSearchTimeEntry={handleSearchTextChange}
       />
 
@@ -46,7 +55,12 @@ function ContentDashboard({ project }: ContentDashboardProps) {
         </p>
       ) : (
         <>
-          <TaskList statusActive={selectedStatus} taskEntries={filteredTasks} />
+          <TaskList
+            handleEditMode={handleEditMode}
+            statusActive={selectedStatus}
+            taskEntries={filteredTasks}
+            onOpenModal={handleOpenModal}
+          />
         </>
       )}
     </div>
