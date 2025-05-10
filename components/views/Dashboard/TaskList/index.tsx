@@ -7,7 +7,10 @@ import {
   DropdownTrigger,
 } from "@heroui/dropdown";
 import { EllipsisVertical } from "lucide-react";
+import { useRouter } from "next/navigation";
 import React from "react";
+
+import { toastError, toastSuccess } from "@/utils/toast";
 
 const statusDetails = {
   approved: {
@@ -50,6 +53,30 @@ interface TaskListProps {
 }
 
 function TaskList({ taskEntries }: TaskListProps) {
+  const router = useRouter();
+
+  async function handleDeleteTask(id: string) {
+    const response = await fetch("/api/project", {
+      body: JSON.stringify({ taskId: id }),
+      method: "DELETE",
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      toastError(result.message);
+
+      return;
+    }
+
+    toastSuccess(result.message);
+    router.refresh();
+    try {
+    } catch (error) {
+      toastError(String(error));
+    }
+  }
+
   return (
     <section>
       <div className="relative overflow-x-auto shadow-md mt-8">
@@ -126,6 +153,7 @@ function TaskList({ taskEntries }: TaskListProps) {
                           key="delete"
                           className="text-danger"
                           color="danger"
+                          onClick={() => handleDeleteTask(task.id)}
                         >
                           Deletar
                         </DropdownItem>

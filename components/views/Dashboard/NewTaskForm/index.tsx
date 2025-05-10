@@ -116,7 +116,9 @@ function NewTaskForm({
         });
 
         if (!response.ok) {
-          throw new Error("Erro ao enviar os dados");
+          toastError("Erro ao enviar os dados");
+
+          return;
         }
         const result = await response.json();
 

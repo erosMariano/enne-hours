@@ -48,3 +48,54 @@ export async function POST(req: Request) {
     );
   }
 }
+
+export async function DELETE(req: Request) {
+  try {
+    // Obtendo a sessão do usuário autenticado
+    const session = await getServerSession(authOptions);
+
+    // Verificando se o usuário está autenticado
+    if (!session || !session.user || !session.user.id) {
+      return NextResponse.json(
+        { error: "Usuário não autenticado." },
+        { status: 401 },
+      );
+    }
+
+    const { taskId } = await req.json();
+
+    if (!taskId) {
+      return NextResponse.json(
+        { error: "ID não encontrado." },
+        { status: 404 },
+      );
+    }
+
+    // Criando um novo projeto e associando ao usuário autenticado
+
+    const task = await prisma.task.findUnique({
+      where: {
+        id: taskId,
+      },
+      include: { project: true },
+    });
+
+    if (!task || task.project.userId !== session.user.id) {
+      return NextResponse.json(
+        { error: "Permissão negada para deletar essa tarefa." },
+        { status: 403 },
+      );
+    }
+    await prisma.task.delete({ where: { id: taskId } });
+
+    return NextResponse.json(
+      { message: "Tarefa deletada com sucesso!" },
+      { status: 200 },
+    );
+  } catch {
+    return NextResponse.json(
+      { error: "Erro interno. Tente novamente mais tarde." },
+      { status: 500 },
+    );
+  }
+}
