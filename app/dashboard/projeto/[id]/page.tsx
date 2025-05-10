@@ -1,9 +1,9 @@
 import React from "react";
 
-import ContentDashboard from "@/components/views/Dashboard/ContentDashboard";
 import HeaderDashboard from "@/components/views/Dashboard/Header";
 import Sidebar from "@/components/views/Dashboard/Sidebar";
 import { prisma } from "@/prisma/prisma";
+import ProjetoWrapper from "@/components/views/Dashboard/ProjetoWrapper";
 
 export default async function Projeto({
   params,
@@ -26,11 +26,7 @@ export default async function Projeto({
 
         <div className="flex-1 flex flex-col gap-4">
           <HeaderDashboard />
-          {project ? (
-            <ContentDashboard project={project} />
-          ) : (
-            <p>Projeto não encontrato</p>
-          )}
+          <ProjetoWrapper project={project} />
         </div>
       </div>
     </main>

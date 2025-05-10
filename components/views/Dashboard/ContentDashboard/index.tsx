@@ -1,6 +1,5 @@
 "use client";
 import React, { useMemo, useState } from "react";
-import { ToastContainer } from "react-toastify";
 
 import ActionBar from "../ActionBar";
 import TaskList from "../TaskList";
@@ -49,7 +48,6 @@ function ContentDashboard({ project }: ContentDashboardProps) {
       ) : (
         <>
           <TaskList statusActive={selectedStatus} taskEntries={filteredTasks} />
-          <ToastContainer />
         </>
       )}
     </div>

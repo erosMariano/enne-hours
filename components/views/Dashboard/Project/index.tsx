@@ -2,7 +2,6 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import { PackageCheck } from "lucide-react";
-import { ToastContainer } from "react-toastify";
 import Link from "next/link";
 
 import CreateProjectForm from "./CreateProjectForm";
@@ -93,7 +92,6 @@ function ProjectInterface() {
         setOpenModal={setOpenModal}
         toggleModal={toggleModal}
       />
-      <ToastContainer />
     </section>
   );
 }
