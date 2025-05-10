@@ -12,7 +12,6 @@ const prismaAcceleratedClient =
   globalThis.prismaAcceleratedGlobal ?? prismaClient.$extends(withAccelerate());
 
 if (process.env.NODE_ENV !== "production") {
-  console.log(process.env.NODE_ENV);
   globalThis.prismaGlobal = prismaClient;
   globalThis.prismaAcceleratedGlobal = prismaAcceleratedClient;
 }

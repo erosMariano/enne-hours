@@ -1,8 +1,9 @@
+import React from "react";
+
 import ContentDashboard from "@/components/views/Dashboard/ContentDashboard";
 import HeaderDashboard from "@/components/views/Dashboard/Header";
 import Sidebar from "@/components/views/Dashboard/Sidebar";
 import { prisma } from "@/prisma/prisma";
-import React from "react";
 
 export default async function Projeto({
   params,

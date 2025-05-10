@@ -1,5 +1,6 @@
 import React from "react";
 import { getServerSession } from "next-auth";
+
 import { prisma } from "@/prisma/prisma";
 import { authOptions } from "@/auth/authOptions";
 import DashboardClient from "@/components/views/Dashboard/DashboardClient";

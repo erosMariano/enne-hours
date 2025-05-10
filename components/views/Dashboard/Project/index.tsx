@@ -2,9 +2,11 @@
 
 import React, { useCallback, useEffect, useState } from "react";
 import { PackageCheck } from "lucide-react";
-import CreateProjectForm from "./CreateProjectForm";
 import { ToastContainer } from "react-toastify";
 import Link from "next/link";
+
+import CreateProjectForm from "./CreateProjectForm";
+
 import { useDashboardStore } from "@/store/dashboardStore";
 
 function ProjectInterface() {
@@ -23,8 +25,8 @@ function ProjectInterface() {
 
   const createButton = (
     <button
-      onClick={toggleModal}
       className="mt-5 h-10 min-w-48 flex items-center justify-center gap-2 text-sm text-black bg-white rounded-md px-4 transition-all border border-transparent hover:bg-[#1b1b1b] hover:text-white hover:border-white cursor-pointer"
+      onClick={toggleModal}
     >
       Criar
     </button>
@@ -32,8 +34,8 @@ function ProjectInterface() {
 
   const skeletonCard = (
     <div className="bg-[#1b1b1b] rounded p-4 flex flex-col items-center justify-center animate-pulse h-36">
-      <div className="h-6 bg-gray-700 w-32 rounded mb-2"></div>
-      <div className="h-4 bg-gray-600 w-24 rounded"></div>
+      <div className="h-6 bg-gray-700 w-32 rounded mb-2" />
+      <div className="h-4 bg-gray-600 w-24 rounded" />
     </div>
   );
 
@@ -65,9 +67,9 @@ function ProjectInterface() {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mt-4">
         {projects.map(({ id, name, createdAt }) => (
           <Link
-            href={`/dashboard/projeto/${id}`}
             key={id}
             className="bg-[#1b1b1b] rounded p-4 flex flex-col items-center justify-center cursor-pointer"
+            href={`/dashboard/projeto/${id}`}
           >
             <h2 className="font-bold text-2xl text-white">{name}</h2>
             <p className="text-sm text-white/40 max-w-80 text-center">

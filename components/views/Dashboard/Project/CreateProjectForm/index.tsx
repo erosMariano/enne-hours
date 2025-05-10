@@ -4,11 +4,12 @@ import React, { useCallback } from "react";
 import { CircleX } from "lucide-react";
 import Image from "next/image";
 import { z } from "zod";
-import Spin from "@/images/icons/spin.svg";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toastError, toastSuccess } from "@/utils/toast";
 import { useRouter } from "next/navigation";
+
+import { toastError, toastSuccess } from "@/utils/toast";
+import Spin from "@/images/icons/spin.svg";
 import { useDashboardStore } from "@/store/dashboardStore";
 
 const projectSchema = z.object({
@@ -54,6 +55,7 @@ function CreateProjectForm({
         });
 
         const result = await response.json();
+
         toastSuccess(result.message);
         setOpenModal(false);
         router.refresh();
@@ -61,7 +63,7 @@ function CreateProjectForm({
         toastError("Erro ao criar projeto");
       }
     },
-    [user, setOpenModal, router]
+    [user, setOpenModal, router],
   );
 
   if (!openModal) return null;
@@ -70,8 +72,8 @@ function CreateProjectForm({
     <div className="fixed inset-0 z-10 flex items-center justify-center bg-black/90">
       <div className="relative bg-[#1b1b1b] w-full max-w-5xl rounded p-8 flex flex-col items-center justify-center">
         <button
-          onClick={toggleModal}
           className="absolute right-4 top-4 p-1 rounded hover:bg-white/10 transition-all"
+          onClick={toggleModal}
         >
           <CircleX className="text-red-500" />
         </button>
@@ -79,12 +81,12 @@ function CreateProjectForm({
         <h2 className="text-white text-2xl font-bold mb-6">Criar Projeto</h2>
 
         <form
-          onSubmit={handleSubmit(handleCreateNewProject)}
           className="flex flex-col items-center w-full"
+          onSubmit={handleSubmit(handleCreateNewProject)}
         >
           <input
-            type="text"
             placeholder="Nome do projeto"
+            type="text"
             {...register("project")}
             className="w-full max-w-64 h-10 text-sm p-2 rounded-md border border-transparent bg-[#333333] text-white placeholder:text-white/40 outline-none focus:border-white transition-all hover:border-white cursor-pointer"
           />
@@ -95,12 +97,12 @@ function CreateProjectForm({
           )}
 
           <button
-            type="submit"
-            disabled={isSubmitting}
             className="mt-5 min-w-64 h-10 px-4 text-sm rounded-md flex items-center justify-center gap-2 bg-white text-black border border-transparent transition-all hover:bg-[#1b1b1b] hover:text-white hover:border-white disabled:bg-transparent disabled:border-white"
+            disabled={isSubmitting}
+            type="submit"
           >
             {isSubmitting ? (
-              <Image alt="Carregando" src={Spin} className="animate-spin" />
+              <Image alt="Carregando" className="animate-spin" src={Spin} />
             ) : (
               "Criar"
             )}

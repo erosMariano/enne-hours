@@ -19,7 +19,7 @@ export async function POST(req: Request) {
     if (!parsed.success) {
       return NextResponse.json(
         { error: parsed.error.format() },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -50,13 +50,12 @@ export async function POST(req: Request) {
 
     return NextResponse.json(
       { message: "Usuário criado com sucesso!" },
-      { status: 201 }
+      { status: 201 },
     );
-  } catch (error) {
-    console.log(error);
+  } catch {
     return NextResponse.json(
       { error: "Erro interno. Tente novamente mais tarde." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

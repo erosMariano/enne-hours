@@ -4,11 +4,10 @@ import { I18nProvider } from "@react-aria/i18n";
 import { Select, SelectItem } from "@heroui/select";
 import { CircleX } from "lucide-react";
 import { useForm, Controller } from "react-hook-form";
+import { useRouter } from "next/navigation";
 
 import { ProjectUnique, TaskCreate, TimeEntry } from "@/types/types";
 import { baseStatusOptions } from "@/utils/constants";
-import { useDashboardStore } from "@/store/dashboardStore";
-import { useRouter } from "next/navigation";
 import { getMinutesDifference } from "@/utils/getTime";
 import { toastError, toastSuccess } from "@/utils/toast";
 
@@ -43,7 +42,6 @@ function NewTaskForm({
   project,
   onChangeOpenModal,
   onOpenModal,
-  onAddTimeEntry,
 }: NewTaskFormProps) {
   const { control, handleSubmit, reset } = useForm<FormData>({
     defaultValues: {
@@ -57,11 +55,9 @@ function NewTaskForm({
 
   const route = useRouter();
 
-  const { user } = useDashboardStore();
-
   // Convert CalendarDate to ISO 8601 string
   const formatCalendarDateToIso = (
-    calendarDate: CalendarDate | null
+    calendarDate: CalendarDate | null,
   ): string => {
     if (!calendarDate) return "";
     const { year, month, day, hour, minute, second, millisecond } =
@@ -74,9 +70,10 @@ function NewTaskForm({
         hour,
         minute,
         second,
-        millisecond
-      )
+        millisecond,
+      ),
     );
+
     return date.toISOString(); // e.g., 2001-03-18T18:03:01.000Z
   };
 
@@ -104,8 +101,6 @@ function NewTaskForm({
         totalTime: diffTime,
       };
 
-      console.log(dataSendBackend);
-
       // Fazendo o fetch com async/await
       try {
         const response = await fetch("/api/task", {
@@ -115,17 +110,19 @@ function NewTaskForm({
           },
           body: JSON.stringify(dataSendBackend),
         });
+
         if (!response.ok) {
           throw new Error("Erro ao enviar os dados");
         }
         const result = await response.json();
-        console.log("Resposta do servidor:", result);
-        reset(); // Reset form
-        onChangeOpenModal(); // Close modal
-        route.refresh();
-        toastSuccess("Tarefa registrada com sucesso");
-      } catch (error) {
-        console.error("Erro ao enviar os dados:", error);
+
+        if (result) {
+          reset(); // Reset form
+          onChangeOpenModal(); // Close modal
+          route.refresh();
+          toastSuccess("Tarefa registrada com sucesso");
+        }
+      } catch {
         toastError("Erro ao enviar os dados");
       }
     }
@@ -151,9 +148,8 @@ function NewTaskForm({
           <label htmlFor="title-task">
             <h3 className="text-sm text-white mb-2 mt-4">Título da tarefa</h3>
             <Controller
-              name="title"
               control={control}
-              rules={{ required: true }}
+              name="title"
               render={({ field }) => (
                 <input
                   className="outline-none w-full h-10 text-sm border-white/60 focus:border-white bg-[#1b1b1b] text-white placeholder:text-white/40 rounded-md border transition-all p-2 cursor-pointer hover:border-white"
@@ -163,6 +159,7 @@ function NewTaskForm({
                   {...field}
                 />
               )}
+              rules={{ required: true }}
             />
           </label>
 
@@ -171,8 +168,8 @@ function NewTaskForm({
               <h3 className="text-sm text-white mb-2">Data de início:</h3>
               <I18nProvider locale="pt-BR">
                 <Controller
-                  name="initialDate"
                   control={control}
+                  name="initialDate"
                   render={({ field }) => (
                     <DatePicker
                       className="date-picker"
@@ -189,8 +186,8 @@ function NewTaskForm({
               <h3 className="text-sm text-white mb-2">Data de Fim:</h3>
               <I18nProvider locale="pt-BR">
                 <Controller
-                  name="endDate"
                   control={control}
+                  name="endDate"
                   render={({ field }) => (
                     <DatePicker
                       className="date-picker"
@@ -212,9 +209,8 @@ function NewTaskForm({
               Status
             </label>
             <Controller
-              name="status"
               control={control}
-              rules={{ required: true }}
+              name="status"
               render={({ field }) => (
                 <Select
                   aria-label="Status"
@@ -228,14 +224,15 @@ function NewTaskForm({
                   ))}
                 </Select>
               )}
+              rules={{ required: true }}
             />
           </div>
 
           <div className="w-full">
             <h3 className="text-sm text-white mb-2 mt-4">Descrição</h3>
             <Controller
-              name="description"
               control={control}
+              name="description"
               render={({ field }) => (
                 <textarea
                   className="outline-none w-full h-32 text-sm border-white/60 focus:border-white bg-[#1b1b1b] text-white placeholder:text-white/40 rounded-md border transition-all p-2 cursor-pointer hover:border-white"

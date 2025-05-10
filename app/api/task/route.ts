@@ -1,7 +1,7 @@
-import { prisma } from "@/prisma/prisma";
 import { NextResponse } from "next/server";
-
 import { getServerSession } from "next-auth";
+
+import { prisma } from "@/prisma/prisma";
 import { authOptions } from "@/auth/authOptions";
 
 export async function POST(req: Request) {
@@ -13,25 +13,25 @@ export async function POST(req: Request) {
     if (!session || !session.user || !session.user.id) {
       return NextResponse.json(
         { error: "Usuário não autenticado." },
-        { status: 401 }
+        { status: 401 },
       );
     }
 
     const body = await req.json();
 
     // Criando um novo projeto e associando ao usuário autenticado
-    const task = await prisma.task.create({
+    await prisma.task.create({
       data: body,
     });
 
     return NextResponse.json(
       { message: "Tarefa criada com sucesso!" },
-      { status: 200 }
+      { status: 200 },
     );
-  } catch (error) {
+  } catch {
     return NextResponse.json(
       { error: "Erro interno. Tente novamente mais tarde." },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }
