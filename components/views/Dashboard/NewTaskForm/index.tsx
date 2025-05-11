@@ -1,5 +1,5 @@
 import { DatePicker } from "@heroui/date-picker";
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useMemo, useState } from "react";
 import { I18nProvider } from "@react-aria/i18n";
 import { Select, SelectItem } from "@heroui/select";
 import { CircleX } from "lucide-react";
@@ -40,6 +40,7 @@ function NewTaskForm({
   onOpenModal,
   onEditMode,
 }: NewTaskFormProps) {
+  const baseStatusOptionsMemo = useMemo(() => baseStatusOptions, []);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const { control, handleSubmit, reset } = useForm<FormData>({
     defaultValues: {
@@ -55,7 +56,7 @@ function NewTaskForm({
 
   // Convert CalendarDate to ISO 8601 string
   const formatCalendarDateToIso = (
-    calendarDate: ZonedDateTime | null,
+    calendarDate: ZonedDateTime | null
   ): string => {
     if (!calendarDate) return "";
     const { year, month, day, hour, minute, second, millisecond } =
@@ -68,63 +69,38 @@ function NewTaskForm({
         hour,
         minute,
         second,
-        millisecond,
-      ),
+        millisecond
+      )
     );
 
     return date.toISOString(); // e.g., 2001-03-18T18:03:01.000Z
   };
 
-  async function handleCreateTask(dataSendBackend: TaskCreate) {
-    const response = await fetch("/api/task", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(dataSendBackend),
+  async function submitTask(dataSendBackend: TaskCreate, editMode: boolean) {
+    const url = "/api/task";
+    const method = editMode ? "PATCH" : "POST";
+
+    const payload = editMode
+      ? { ...dataSendBackend, id: task[0].id }
+      : dataSendBackend;
+
+    const response = await fetch(url, {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
     });
 
     if (!response.ok) {
       toastError("Erro ao enviar os dados");
-
       return;
     }
-    const result = await response.json();
 
-    if (result) {
-      reset(); // Reset form
-      onChangeOpenModal(); // Close modal
-      route.refresh();
-      toastSuccess("Tarefa registrada com sucesso");
-    }
-  }
-
-  async function handleEditTask(dataSendBackend: TaskCreate) {
-    const data = {
-      ...dataSendBackend,
-      id: task[0].id,
-    };
-    const response = await fetch("/api/task", {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-
-    if (!response.ok) {
-      toastError("Erro ao enviar os dados");
-
-      return;
-    }
-    const result = await response.json();
-
-    if (result) {
-      reset(); // Reset form
-      onChangeOpenModal(); // Close modal
-      route.refresh();
-      toastSuccess("Atualizada com sucesso");
-    }
+    toastSuccess(
+      editMode ? "Atualizada com sucesso" : "Tarefa registrada com sucesso"
+    );
+    reset();
+    onChangeOpenModal();
+    route.refresh();
   }
 
   const onSubmit = async (data: FormData) => {
@@ -132,11 +108,11 @@ function NewTaskForm({
       setIsSubmitting(true);
 
       const startTime = zonedDateTimeToJSDate(
-        parseAbsoluteToLocal(formatCalendarDateToIso(data.initialDate!)),
+        parseAbsoluteToLocal(formatCalendarDateToIso(data.initialDate!))
       );
 
       const endTime = zonedDateTimeToJSDate(
-        parseAbsoluteToLocal(formatCalendarDateToIso(data.endDate!)),
+        parseAbsoluteToLocal(formatCalendarDateToIso(data.endDate!))
       );
 
       const diffTime = getMinutesDifference(startTime, endTime);
@@ -156,11 +132,7 @@ function NewTaskForm({
       };
 
       try {
-        if (onEditMode) {
-          await handleEditTask(dataSendBackend);
-        } else {
-          await handleCreateTask(dataSendBackend);
-        }
+        await submitTask(dataSendBackend, onEditMode);
       } catch {
         toastError("Erro ao enviar os dados");
       } finally {
@@ -174,25 +146,19 @@ function NewTaskForm({
   }
 
   useEffect(() => {
-    if (onEditMode && task.length > 0) {
-      const taskItem = task[0];
+    if (!onEditMode || task.length === 0) return;
 
-      const zonedStartTime = parseZonedDateTime(
-        toZonedDateTimeString(taskItem.startTime),
-      );
+    const [taskItem] = task;
 
-      const zonedEndTime = parseZonedDateTime(
-        toZonedDateTimeString(taskItem.endTime),
-      );
-
-      reset({
-        title: taskItem.title,
-        description: taskItem.description,
-        status: String(taskItem.status),
-        initialDate: zonedStartTime,
-        endDate: zonedEndTime,
-      });
-    }
+    reset({
+      title: taskItem.title,
+      description: taskItem.description,
+      status: String(taskItem.status),
+      initialDate: parseZonedDateTime(
+        toZonedDateTimeString(taskItem.startTime)
+      ),
+      endDate: parseZonedDateTime(toZonedDateTimeString(taskItem.endTime)),
+    });
   }, [onEditMode, task, reset]);
 
   return (
@@ -239,6 +205,7 @@ function NewTaskForm({
                   name="initialDate"
                   render={({ field }) => (
                     <DatePicker
+                      aria-labelledby="label-initial-date"
                       className="date-picker"
                       granularity="second"
                       id="initial-date"
@@ -258,6 +225,7 @@ function NewTaskForm({
                   name="endDate"
                   render={({ field }) => (
                     <DatePicker
+                      aria-labelledby="label-end-date"
                       className="date-picker"
                       granularity="second"
                       id="end-date"
@@ -286,14 +254,16 @@ function NewTaskForm({
                   className="w-full select-heroui"
                   id="select-task"
                   placeholder="Selecione o status"
-                  selectedKeys={field.value ? [field.value] : []}
+                  selectedKeys={
+                    field.value ? new Set([field.value]) : new Set()
+                  }
                   onSelectionChange={(key) => {
                     const value = Array.from(key)[0];
 
                     field.onChange(value);
                   }}
                 >
-                  {baseStatusOptions.map((status) => (
+                  {baseStatusOptionsMemo.map((status) => (
                     <SelectItem key={status.status}>{status.label}</SelectItem>
                   ))}
                 </Select>
@@ -333,4 +303,4 @@ function NewTaskForm({
   );
 }
 
-export default NewTaskForm;
+export default memo(NewTaskForm);

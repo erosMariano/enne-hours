@@ -1,7 +1,7 @@
 "use client";
 
 import { Play, Plus, Settings } from "lucide-react";
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 
 import NewTaskForm from "../NewTaskForm";
 
@@ -28,12 +28,13 @@ function ActionBar({
   handleEditMode,
 }: ActionBarProps) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState(statusOptionsWithAll[0]);
+  const statusOptionsMemo = useMemo(() => statusOptionsWithAll, []);
+  const [selectedStatus, setSelectedStatus] = useState(statusOptionsMemo[0]);
 
   const toggleDropdown = () => setDropdownOpen((prev) => !prev);
 
   const handleStatusChange = (status: StatusFilter) => {
-    const found = statusOptionsWithAll.find((item) => item.status == status);
+    const found = statusOptionsMemo.find((item) => item.status == status);
 
     if (!found) return;
 
@@ -72,7 +73,7 @@ function ActionBar({
                 : "opacity-0 pointer-events-none"
             }`}
           >
-            {statusOptionsWithAll.map((el) => (
+            {statusOptionsMemo.map((el) => (
               <button
                 key={el.status}
                 className="cursor-pointer px-10 py-2.5 border border-transparent rounded transition-all hover:border-white w-full text-sm"
