@@ -147,7 +147,17 @@ function NewTaskForm({
   }
 
   useEffect(() => {
-    if (!onEditMode || task.length === 0) return;
+    if (!onEditMode || task.length === 0) {
+      reset({
+        title: "",
+        description: "",
+        endDate: null,
+        initialDate: null,
+        status: "",
+      });
+
+      return;
+    }
 
     const [taskItem] = task;
 
@@ -219,7 +229,7 @@ function NewTaskForm({
             </label>
 
             <label className="w-full" htmlFor="end-date">
-              <h3 className="text-sm text-white mb-2">Data de Fim:</h3>
+              <h3 className="text-sm text-white mb-2">Data de Término:</h3>
               <I18nProvider locale="pt-BR">
                 <Controller
                   control={control}
