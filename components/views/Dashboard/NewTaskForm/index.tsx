@@ -56,7 +56,7 @@ function NewTaskForm({
 
   // Convert CalendarDate to ISO 8601 string
   const formatCalendarDateToIso = (
-    calendarDate: ZonedDateTime | null
+    calendarDate: ZonedDateTime | null,
   ): string => {
     if (!calendarDate) return "";
     const { year, month, day, hour, minute, second, millisecond } =
@@ -69,8 +69,8 @@ function NewTaskForm({
         hour,
         minute,
         second,
-        millisecond
-      )
+        millisecond,
+      ),
     );
 
     return date.toISOString(); // e.g., 2001-03-18T18:03:01.000Z
@@ -92,11 +92,12 @@ function NewTaskForm({
 
     if (!response.ok) {
       toastError("Erro ao enviar os dados");
+
       return;
     }
 
     toastSuccess(
-      editMode ? "Atualizada com sucesso" : "Tarefa registrada com sucesso"
+      editMode ? "Atualizada com sucesso" : "Tarefa registrada com sucesso",
     );
     reset();
     onChangeOpenModal();
@@ -108,11 +109,11 @@ function NewTaskForm({
       setIsSubmitting(true);
 
       const startTime = zonedDateTimeToJSDate(
-        parseAbsoluteToLocal(formatCalendarDateToIso(data.initialDate!))
+        parseAbsoluteToLocal(formatCalendarDateToIso(data.initialDate!)),
       );
 
       const endTime = zonedDateTimeToJSDate(
-        parseAbsoluteToLocal(formatCalendarDateToIso(data.endDate!))
+        parseAbsoluteToLocal(formatCalendarDateToIso(data.endDate!)),
       );
 
       const diffTime = getMinutesDifference(startTime, endTime);
@@ -155,7 +156,7 @@ function NewTaskForm({
       description: taskItem.description,
       status: String(taskItem.status),
       initialDate: parseZonedDateTime(
-        toZonedDateTimeString(taskItem.startTime)
+        toZonedDateTimeString(taskItem.startTime),
       ),
       endDate: parseZonedDateTime(toZonedDateTimeString(taskItem.endTime)),
     });

@@ -20,7 +20,6 @@ export async function POST(req: Request) {
     await prisma.task.create({
       data: {
         ...body,
-        userId: session.user.id,
       },
     });
 
