@@ -9,7 +9,43 @@ export interface FormAuthProps {
   labelSubmit: string;
 }
 
-// Dashboard
+// Usuário
+export interface User {
+  id: string;
+  email: string;
+  name: string;
+  password?: string;
+  image?: string | null;
+  projects?: Project[];
+}
+
+// Projeto
+export interface Project {
+  id: string;
+  name: string;
+  userId?: string | null;
+  user?: User | null;
+  tasks?: Task[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// Tarefa
+export interface Task {
+  id?: string;
+  title: string;
+  projectId: string;
+  projectName: string;
+  description: string;
+  startTime: Date | string;
+  endTime: Date | string;
+  totalTime: number;
+  createdAt: Date | string;
+  updatedAt: Date | string;
+  status: StatusFilter | string;
+}
+
+// Entrada de Tempo
 export interface TimeEntry {
   imgUrl: string;
   id: number;
@@ -21,10 +57,7 @@ export interface TimeEntry {
   status: StatusFilter;
 }
 
-export interface TaskListProps {
-  timeEntries: TimeEntry[];
-  statusActive: StatusFilter;
-}
+// Filtro de Status
 export type StatusFilter =
   | "approved"
   | "arresting"
@@ -32,104 +65,32 @@ export type StatusFilter =
   | "doing"
   | "all";
 
-interface StatusOptionsProps {
+// Opções de Status
+export interface StatusOptionsProps {
   status: StatusFilter;
   label: string;
 }
 
-export interface User {
-  id: string;
-  email: string;
-  name: string;
-  password: string;
-  image?: string | null; // Add the image property
+// Lista de Tarefas
+export interface TaskListProps {
+  timeEntries: TimeEntry[];
+  statusActive: StatusFilter;
+}
+
+// Componentes do Dashboard
+export interface DashboardClientProps {
   projects: Project[];
+  user: User;
 }
 
-export interface Project {
-  id: string;
-  name: string;
-  userId?: string | null;
-  user?: User | null;
-  tasks: Task[];
-  createdAt: Date;
-  updatedAt: Date;
+export interface ButtonLogOutProps {
+  sidebarActive: boolean;
 }
 
-// types/types.ts
-
-export interface Task {
-  title: string;
-  id: string;
-  projectId: string;
-  projectName: string;
-  description: string;
-  startTime: Date;
-  endTime: Date;
-  totalTime: number;
-  createdAt: Date;
-  updatedAt: Date;
-  status: string;
-}
-export interface TaskCreate {
-  title: string;
-  projectId: string;
-  projectName: string;
-  description: string;
-  startTime: string;
-  endTime: string;
-  totalTime: number;
-  createdAt: string;
-  updatedAt: string;
-  status: string;
+export interface ContentDashboardProps {
+  project: Project;
 }
 
-export interface ProjectWithTasks {
-  id: string;
-  name: string;
-  userId: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-  tasks: Task[];
-}
-
-export interface ProjectUnique {
-  id: string;
-  name: string;
-  createdAt: Date;
-  userId: string | null;
-  updatedAt: Date;
-  tasks: Task[];
-}
-
-export interface ItemTaskList {
-  title: string;
-  id: string;
-  createdAt: Date;
-  updatedAt: Date;
-  projectId: string;
-  projectName: string;
-  description: string;
-  startTime: Date;
-  endTime: Date;
-  totalTime: number;
-  status: keyof typeof statusDetails | string;
-}
-
-interface DashboardClientProject {
-  id: string;
-  name: string;
-  userId: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-interface DashboardClientUser {
-  id: string;
-  name: string;
-  email: string;
-}
-interface DashboardClientProps {
-  projects: DashboardClientProject[];
-  user: DashboardClientUser;
+export interface ItemsSideBarProps {
+  sidebarActive: boolean;
 }

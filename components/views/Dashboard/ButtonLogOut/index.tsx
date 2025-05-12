@@ -4,9 +4,8 @@ import { LogOut } from "lucide-react";
 import { signOut } from "next-auth/react";
 import React from "react";
 
-interface ButtonLogOutProps {
-  sidebarActive: boolean;
-}
+import { ButtonLogOutProps } from "@/types/types";
+
 function ButtonLogOut({ sidebarActive }: ButtonLogOutProps) {
   return (
     <button

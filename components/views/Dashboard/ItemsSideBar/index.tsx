@@ -2,9 +2,8 @@ import { FolderOpenDot, House } from "lucide-react";
 import Link from "next/link";
 import React from "react";
 
-interface ItemsSideBarProps {
-  sidebarActive: boolean;
-}
+import { ItemsSideBarProps } from "@/types/types";
+
 function ItemsSideBar({ sidebarActive }: ItemsSideBarProps) {
   const itemsSideBar = [
     {

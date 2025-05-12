@@ -5,11 +5,7 @@ import { useState, useMemo } from "react";
 import ActionBar from "../ActionBar";
 import TaskList from "../TaskList";
 
-import { ProjectUnique, StatusFilter } from "@/types/types";
-
-interface ContentDashboardProps {
-  project: ProjectUnique;
-}
+import { ContentDashboardProps, StatusFilter } from "@/types/types";
 
 function ContentDashboard({ project }: ContentDashboardProps) {
   const [selectedStatus, setSelectedStatus] = useState<StatusFilter>("all");
@@ -25,7 +21,7 @@ function ContentDashboard({ project }: ContentDashboardProps) {
     setSearchText(text.toLowerCase());
 
   const filteredTasks = useMemo(() => {
-    return project.tasks.filter((task) => {
+    return (project.tasks ?? []).filter((task) => {
       const matchesSearch = task.description.toLowerCase().includes(searchText);
       const matchesStatus =
         selectedStatus === "all" || task.status === selectedStatus;
@@ -46,7 +42,7 @@ function ContentDashboard({ project }: ContentDashboardProps) {
         onSearchTimeEntry={handleSearchTextChange}
       />
 
-      {project.tasks.length === 0 ? (
+      {(project.tasks ?? []).length === 0 ? (
         <p className="text-white text-center mt-10">
           Nenhuma tarefa encontrada neste projeto.
         </p>
