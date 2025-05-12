@@ -68,7 +68,7 @@ function CreateProjectForm({
         toastError("Erro ao criar projeto");
       }
     },
-    [user, setOpenModal, router],
+    [user, setOpenModal, router]
   );
 
   if (!openModal) return null;

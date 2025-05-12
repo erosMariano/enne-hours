@@ -115,3 +115,21 @@ export interface ItemTaskList {
   totalTime: number;
   status: keyof typeof statusDetails | string;
 }
+
+interface DashboardClientProject {
+  id: string;
+  name: string;
+  userId: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+interface DashboardClientUser {
+  id: string;
+  name: string;
+  email: string;
+}
+interface DashboardClientProps {
+  projects: DashboardClientProject[];
+  user: DashboardClientUser;
+}

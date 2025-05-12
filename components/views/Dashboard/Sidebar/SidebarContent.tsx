@@ -1,5 +1,5 @@
 "use client";
-
+import clsx from "clsx";
 import { FolderOpenDot, House, LogOut } from "lucide-react";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
@@ -34,9 +34,10 @@ export function SidebarContent() {
               className="flex items-center gap-2 hover:bg-white/10 rounded transition-all"
             >
               <Link
-                className={`flex items-center gap-2 w-full text-sm p-2 ${
+                className={clsx(
+                  "flex items-center gap-2 w-full text-sm p-2",
                   !isOpen && "justify-center"
-                }`}
+                )}
                 href={item.link}
               >
                 {item.icon}
@@ -53,18 +54,15 @@ export function SidebarContent() {
 
       <div className="flex items-end flex-1">
         <button
-          className={`cursor-pointer w-full p-2 ${
+          aria-label="Sair da conta"
+          className={clsx(
+            "cursor-pointer w-full p-2 text-sm flex items-center justify-center gap-2 hover:bg-white/10 rounded",
             isOpen && "bg-white/10"
-          } p-2 text-sm flex items-center justify-center gap-2 hover:bg-white/10 rounded`}
+          )}
           onClick={() => signOut({ callbackUrl: "/" })}
         >
-          {!isOpen ? (
-            <LogOut size={14} />
-          ) : (
-            <>
-              Sair <LogOut size={14} />
-            </>
-          )}
+          {isOpen && <span>Sair</span>}
+          <LogOut size={14} />
         </button>
       </div>
     </>

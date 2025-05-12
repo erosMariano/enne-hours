@@ -1,28 +1,33 @@
+// dashboardStore.ts
+import { DashboardClientProject, DashboardClientUser } from "@/types/types";
 import { create } from "zustand";
-interface Project {
-  id: string;
-  name: string;
-  userId: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-}
 
 interface DashboardState {
-  user: User | null;
-  projects: Project[];
-  setUser: (user: User | null) => void;
-  setProjects: (projects: Project[]) => void;
+  user: DashboardClientUser | null;
+  projects: DashboardClientProject[];
+  setUser: (
+    user:
+      | DashboardClientUser
+      | null
+      | ((prev: DashboardClientUser | null) => DashboardClientUser | null)
+  ) => void;
+  setProjects: (
+    projects:
+      | DashboardClientProject[]
+      | ((prev: DashboardClientProject[]) => DashboardClientProject[])
+  ) => void;
 }
 
-export const useDashboardStore = create<DashboardState>()((set) => ({
+export const useDashboardStore = create<DashboardState>()((set, get) => ({
   user: null,
   projects: [],
-  setUser: (user) => set({ user }),
-  setProjects: (projects) => set({ projects }),
+  setUser: (user) =>
+    set((state) => ({
+      user: typeof user === "function" ? user(state.user) : user,
+    })),
+  setProjects: (projects) =>
+    set((state) => ({
+      projects:
+        typeof projects === "function" ? projects(state.projects) : projects,
+    })),
 }));

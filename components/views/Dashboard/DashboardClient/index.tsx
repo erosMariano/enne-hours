@@ -6,32 +6,27 @@ import HeaderDashboard from "@/components/views/Dashboard/Header";
 import Sidebar from "@/components/views/Dashboard/Sidebar";
 import ProjectInterface from "@/components/views/Dashboard/Project";
 import { useDashboardStore } from "@/store/dashboardStore";
+import { DashboardClientProps } from "@/types/types";
 
-interface Project {
-  id: string;
-  name: string;
-  userId: string | null;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-}
-interface DashboardProps {
-  projects: Project[];
-  user: User;
-}
-
-export default function DashboardClient({ projects, user }: DashboardProps) {
+export default function DashboardClient({
+  projects,
+  user,
+}: DashboardClientProps) {
   const { setProjects, setUser } = useDashboardStore();
 
   useEffect(() => {
-    setUser(user);
-    setProjects(projects);
-  }, [user, projects, setProjects, setUser]);
+    setUser((prev) => {
+      if (!user || (prev && prev.id === user.id)) return prev;
+      return user;
+    });
+
+    setProjects((prev) => {
+      const sameProjects =
+        prev.length === projects.length &&
+        prev.every((p, i) => p.id === projects[i].id);
+      return sameProjects ? prev : projects;
+    });
+  }, [user, projects, setUser, setProjects]);
 
   return (
     <main className="dark min-h-screen flex">
