@@ -25,7 +25,7 @@ model User {
 model Project {
   id        String   @id @default(uuid()) @map("_id")
   name      String
-  userId    String?  // é opcional
+  userId    String
   user      User?    @relation(fields: [userId], references: [id])
   tasks     Task[]   // Relação 1:N com Task
   createdAt DateTime @default(now())

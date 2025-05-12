@@ -1,12 +1,13 @@
 "use client";
 
-import { Play, Plus, Settings } from "lucide-react";
+import { Play, Plus, Settings, Share } from "lucide-react";
 import React, { useMemo, useState } from "react";
 
 import NewTaskForm from "../NewTaskForm";
 
 import { ProjectUnique, StatusFilter } from "@/types/types";
 import { statusOptionsWithAll } from "@/utils/constants";
+import Link from "next/link";
 
 interface ActionBarProps {
   onChangeStatus: (status: StatusFilter) => void;
@@ -96,6 +97,13 @@ function ActionBar({
         >
           <Plus /> Nova Tarefa
         </button>
+
+        <Link
+          className="h-10 flex items-center justify-center gap-2 text-sm text-black bg-white rounded-md px-4 transition-all border border-transparent  hover:bg-[#1b1b1b] hover:text-white hover:border-white cursor-pointer"
+          href={`/share/${project.id}`}
+        >
+          <Share /> Compartilhar horas
+        </Link>
 
         <NewTaskForm
           project={project}
