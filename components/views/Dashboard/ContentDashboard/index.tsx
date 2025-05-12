@@ -1,5 +1,6 @@
 "use client";
-import React, { useMemo, useState } from "react";
+
+import { useState, useMemo } from "react";
 
 import ActionBar from "../ActionBar";
 import TaskList from "../TaskList";
@@ -14,18 +15,14 @@ function ContentDashboard({ project }: ContentDashboardProps) {
   const [selectedStatus, setSelectedStatus] = useState<StatusFilter>("all");
   const [searchText, setSearchText] = useState("");
   const [openModal, setOpenModal] = useState<boolean>(false);
-  const handleOpenModal = () => setOpenModal((prev) => !prev);
-  const handleEditMode = (value: boolean) => setEditMode(value);
-
   const [editMode, setEditMode] = useState<boolean>(false);
 
-  function handleChangeStatus(status: StatusFilter) {
+  const handleOpenModal = () => setOpenModal((prev) => !prev);
+  const handleEditMode = (value: boolean) => setEditMode(value);
+  const handleChangeStatus = (status: StatusFilter) =>
     setSelectedStatus(status);
-  }
-
-  function handleSearchTextChange(text: string) {
+  const handleSearchTextChange = (text: string) =>
     setSearchText(text.toLowerCase());
-  }
 
   const filteredTasks = useMemo(() => {
     return project.tasks.filter((task) => {
@@ -54,14 +51,12 @@ function ContentDashboard({ project }: ContentDashboardProps) {
           Nenhuma tarefa encontrada neste projeto.
         </p>
       ) : (
-        <>
-          <TaskList
-            handleEditMode={handleEditMode}
-            statusActive={selectedStatus}
-            taskEntries={filteredTasks}
-            onOpenModal={handleOpenModal}
-          />
-        </>
+        <TaskList
+          handleEditMode={handleEditMode}
+          statusActive={selectedStatus}
+          taskEntries={filteredTasks}
+          onOpenModal={handleOpenModal}
+        />
       )}
     </div>
   );

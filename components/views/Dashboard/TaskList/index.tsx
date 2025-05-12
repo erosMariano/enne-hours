@@ -15,22 +15,10 @@ import { ItemTaskList } from "@/types/types";
 import { useTaskStore } from "@/store/taskItemStore";
 
 const statusDetails = {
-  approved: {
-    text: "Aprovado",
-    color: "bg-green-800",
-  },
-  arresting: {
-    text: "Pendente",
-    color: "bg-yellow-800",
-  },
-  rejected: {
-    text: "Rejeitado",
-    color: "bg-red-800",
-  },
-  doing: {
-    text: "Andamento",
-    color: "bg-blue-800",
-  },
+  approved: { text: "Aprovado", color: "bg-green-800" },
+  arresting: { text: "Pendente", color: "bg-yellow-800" },
+  rejected: { text: "Rejeitado", color: "bg-red-800" },
+  doing: { text: "Andamento", color: "bg-blue-800" },
 };
 
 const dateFormatter = new Intl.DateTimeFormat("pt-BR", { timeZone: "UTC" });
@@ -46,33 +34,32 @@ function TaskList({ taskEntries, onOpenModal, handleEditMode }: TaskListProps) {
   const router = useRouter();
   const { setTask } = useTaskStore();
 
-  async function handleDeleteTask(id: string) {
-    const response = await fetch("/api/project", {
-      body: JSON.stringify({ taskId: id }),
-      method: "DELETE",
-    });
-
-    const result = await response.json();
-
-    if (!response.ok) {
-      toastError(result.message);
-
-      return;
-    }
-
-    toastSuccess(result.message);
-    router.refresh();
+  // Função para deletar tarefa
+  const handleDeleteTask = async (id: string) => {
     try {
+      const response = await fetch("/api/project", {
+        body: JSON.stringify({ taskId: id }),
+        method: "DELETE",
+      });
+      const result = await response.json();
+
+      if (!response.ok) {
+        toastError(result.message);
+      } else {
+        toastSuccess(result.message);
+        router.refresh();
+      }
     } catch (error) {
       toastError(String(error));
     }
-  }
+  };
 
-  function handleEditModal(task: ItemTaskList) {
+  // Função para abrir modal de edição
+  const handleEditModal = (task: ItemTaskList) => {
     handleEditMode(true);
     onOpenModal();
     setTask([task]);
-  }
+  };
 
   return (
     <section>
@@ -80,27 +67,13 @@ function TaskList({ taskEntries, onOpenModal, handleEditMode }: TaskListProps) {
         <table className="w-full text-sm text-left rtl:text-right">
           <thead className="text-xs text-white">
             <tr>
-              <th className="px-6 py-3 font-normal" scope="col">
-                Título
-              </th>
-              <th className="px-6 py-3 font-normal" scope="col">
-                Projeto
-              </th>
-              <th className="px-6 py-3 font-normal" scope="col">
-                Descrição
-              </th>
-              <th className="px-6 py-3 font-normal" scope="col">
-                Tempo Registrado
-              </th>
-              <th className="px-6 py-3 font-normal" scope="col">
-                Data
-              </th>
-              <th className="px-6 py-3 font-normal" scope="col">
-                Status
-              </th>
-              <th className="px-6 py-3 font-normal" scope="col">
-                Ações
-              </th>
+              <th className="px-6 py-3 font-normal">Título</th>
+              <th className="px-6 py-3 font-normal">Projeto</th>
+              <th className="px-6 py-3 font-normal">Descrição</th>
+              <th className="px-6 py-3 font-normal">Tempo Registrado</th>
+              <th className="px-6 py-3 font-normal">Data</th>
+              <th className="px-6 py-3 font-normal">Status</th>
+              <th className="px-6 py-3 font-normal">Ações</th>
             </tr>
           </thead>
           <tbody>
@@ -123,7 +96,7 @@ function TaskList({ taskEntries, onOpenModal, handleEditMode }: TaskListProps) {
                   <td className="px-6 py-4 text-white">{task.projectName}</td>
                   <td className="px-6 py-4 text-white">{task.description}</td>
                   <td className="px-6 py-4 text-white">
-                    {Math.floor(task.totalTime / 60)}h
+                    {Math.floor(task.totalTime / 60)}h{" "}
                     {Math.floor(task.totalTime % 60)}min
                   </td>
                   <td className="px-6 py-4 text-white">

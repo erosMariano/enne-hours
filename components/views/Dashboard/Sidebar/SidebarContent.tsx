@@ -36,7 +36,7 @@ export function SidebarContent() {
               <Link
                 className={clsx(
                   "flex items-center gap-2 w-full text-sm p-2",
-                  !isOpen && "justify-center"
+                  !isOpen && "justify-center",
                 )}
                 href={item.link}
               >
@@ -57,7 +57,7 @@ export function SidebarContent() {
           aria-label="Sair da conta"
           className={clsx(
             "cursor-pointer w-full p-2 text-sm flex items-center justify-center gap-2 hover:bg-white/10 rounded",
-            isOpen && "bg-white/10"
+            isOpen && "bg-white/10",
           )}
           onClick={() => signOut({ callbackUrl: "/" })}
         >

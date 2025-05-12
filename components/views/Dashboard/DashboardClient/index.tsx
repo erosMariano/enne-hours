@@ -17,6 +17,7 @@ export default function DashboardClient({
   useEffect(() => {
     setUser((prev) => {
       if (!user || (prev && prev.id === user.id)) return prev;
+
       return user;
     });
 
@@ -24,6 +25,7 @@ export default function DashboardClient({
       const sameProjects =
         prev.length === projects.length &&
         prev.every((p, i) => p.id === projects[i].id);
+
       return sameProjects ? prev : projects;
     });
   }, [user, projects, setUser, setProjects]);

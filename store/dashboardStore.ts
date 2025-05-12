@@ -1,6 +1,7 @@
 // dashboardStore.ts
-import { DashboardClientProject, DashboardClientUser } from "@/types/types";
 import { create } from "zustand";
+
+import { DashboardClientProject, DashboardClientUser } from "@/types/types";
 
 interface DashboardState {
   user: DashboardClientUser | null;
@@ -9,16 +10,16 @@ interface DashboardState {
     user:
       | DashboardClientUser
       | null
-      | ((prev: DashboardClientUser | null) => DashboardClientUser | null)
+      | ((prev: DashboardClientUser | null) => DashboardClientUser | null),
   ) => void;
   setProjects: (
     projects:
       | DashboardClientProject[]
-      | ((prev: DashboardClientProject[]) => DashboardClientProject[])
+      | ((prev: DashboardClientProject[]) => DashboardClientProject[]),
   ) => void;
 }
 
-export const useDashboardStore = create<DashboardState>()((set, get) => ({
+export const useDashboardStore = create<DashboardState>()((set) => ({
   user: null,
   projects: [],
   setUser: (user) =>

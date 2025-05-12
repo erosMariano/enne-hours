@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import React, { useCallback, useEffect, useState, memo } from "react";
 import { PackageCheck } from "lucide-react";
 import Link from "next/link";
+
 import { useDashboardStore } from "@/store/dashboardStore";
 
 // Lazy-load CreateProjectForm
@@ -30,6 +31,7 @@ const SkeletonCard = memo(() => (
     <div className="h-4 bg-gray-600 w-24 rounded" />
   </div>
 ));
+
 SkeletonCard.displayName = "CreateButton";
 
 // Reusable Project Card Component
@@ -44,7 +46,7 @@ const ProjectCard = memo(
         Criado em {new Date(createdAt).toLocaleDateString()}
       </p>
     </Link>
-  )
+  ),
 );
 
 ProjectCard.displayName = "CreateButton";
@@ -98,9 +100,9 @@ function ProjectInterface() {
         {projects.map((project) => (
           <ProjectCard
             key={project.id}
+            createdAt={project.createdAt}
             id={project.id}
             name={project.name}
-            createdAt={project.createdAt}
           />
         ))}
       </div>
