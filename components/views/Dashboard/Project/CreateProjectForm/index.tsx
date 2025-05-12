@@ -54,6 +54,11 @@ function CreateProjectForm({
           }),
         });
 
+        if (!response.ok) {
+          toastError("Erro ao criar projeto");
+
+          return;
+        }
         const result = await response.json();
 
         toastSuccess(result.message);
@@ -63,7 +68,7 @@ function CreateProjectForm({
         toastError("Erro ao criar projeto");
       }
     },
-    [user, setOpenModal, router],
+    [user, setOpenModal, router]
   );
 
   if (!openModal) return null;

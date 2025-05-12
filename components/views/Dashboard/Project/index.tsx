@@ -1,12 +1,14 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import React, { useCallback, useEffect, useState } from "react";
 import { PackageCheck } from "lucide-react";
 import Link from "next/link";
 
-import CreateProjectForm from "./CreateProjectForm";
-
 import { useDashboardStore } from "@/store/dashboardStore";
+const CreateProjectForm = dynamic(() => import("./CreateProjectForm"), {
+  ssr: false,
+});
 
 function ProjectInterface() {
   const { projects } = useDashboardStore();
