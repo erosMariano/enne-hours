@@ -2,6 +2,7 @@
 
 import { FolderOpenDot, House, LogOut } from "lucide-react";
 import Link from "next/link";
+import { signOut } from "next-auth/react";
 
 import { useSidebarStore } from "@/store/sidebarStore";
 
@@ -55,6 +56,7 @@ export function SidebarContent() {
           className={`cursor-pointer w-full p-2 ${
             isOpen && "bg-white/10"
           } p-2 text-sm flex items-center justify-center gap-2 hover:bg-white/10 rounded`}
+          onClick={() => signOut({ callbackUrl: "/" })}
         >
           {!isOpen ? (
             <LogOut size={14} />

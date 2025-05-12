@@ -1,8 +1,8 @@
-import { prisma } from "@/prisma/prisma";
-import Logo from "@/images/logo.svg";
 import Image from "next/image";
 import Link from "next/link";
-import { user } from "@heroui/theme";
+
+import Logo from "@/images/logo.svg";
+import { prisma } from "@/prisma/prisma";
 
 // Função de pré-renderização para gerar as rotas dinâmicas
 export async function generateStaticParams() {
@@ -53,7 +53,7 @@ export default async function Projeto({
 
   const totalHours = project?.tasks.reduce(
     (acc, value) => acc + value.totalTime,
-    0
+    0,
   );
 
   function getTimeFormatted(minutes: number) {

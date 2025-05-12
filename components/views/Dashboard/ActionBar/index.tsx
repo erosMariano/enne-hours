@@ -2,12 +2,12 @@
 
 import { Play, Plus, Settings, Share } from "lucide-react";
 import React, { useMemo, useState } from "react";
+import Link from "next/link";
 
 import NewTaskForm from "../NewTaskForm";
 
 import { ProjectUnique, StatusFilter } from "@/types/types";
 import { statusOptionsWithAll } from "@/utils/constants";
-import Link from "next/link";
 
 interface ActionBarProps {
   onChangeStatus: (status: StatusFilter) => void;
